@@ -15,6 +15,7 @@
 
 StrUtil *AST = nullptr;
 
+
 int _WANT_DEBUG = 0;
 
 #define YY_NO_UNPUT
@@ -73,8 +74,12 @@ int main(int argc, char **argv)
 
   if ( AST == nullptr ) return EXIT_SUCCESS;  // empty file?
   
+  ofstream output;
+  output.open(outFilename);
+  // verify?
+
   // Generate code
-  // ...
+  AST->printNode(&output);
 
   // clean up
   delete AST;
