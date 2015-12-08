@@ -36,7 +36,7 @@ inline BlockNode::BlockNode(){//vector<string*>* variabledecs, vector<string*>* 
 }
 
 inline void BlockNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
-	
+	TABS(out, numTabs);
 	out << "Block node" << endl;
 }
 

@@ -19,7 +19,7 @@ using namespace std;
 /* The Top level Node of an AST. */
 class FunctionDefinitionNode : public FunctionDeclarationNode {
 protected:
-	BlockNode block;
+	BlockNode* block;
 
 public:
 	FunctionDefinitionNode(string* id, bool isSFunction, vector<ParameterNode*>* params, BlockNode* block) ;
@@ -27,19 +27,21 @@ public:
 	void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
 
 	void compile(map<string,string> &symbolTable);
+
+	~FunctionDefinitionNode();
 };
 
 inline FunctionDefinitionNode::FunctionDefinitionNode(string* id, bool isSFunction, vector<ParameterNode*>* params, BlockNode* block) 
 						  : FunctionDeclarationNode(id, isSFunction, params) {
-	this->block = *block;
-	delete block;
+	this->block = block;
 }
 
 inline void FunctionDefinitionNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
 	compile(symbolTable);
-	
+
 	string retType = isSFunction?  naughtToC["string"] : naughtToC["int"];
 
+	TABS(out, numTabs);
 	out << retType << " " << name << "(";
 
 	for (unsigned int i = 0; i < parameterList.size(); i++) {
@@ -48,8 +50,7 @@ inline void FunctionDefinitionNode::printNode(ofstream &out, map<string,string> 
 			out << ", ";
 	}
 	out << ") {" << endl;
-
-	out << name << " FunctionDefinitionNode (w block) " << endl;
+	block->printNode(out, symbolTable, numTabs + 1);
 	out << "}" << endl;
 }
 
@@ -57,6 +58,10 @@ inline void FunctionDefinitionNode::printNode(ofstream &out, map<string,string> 
 inline void FunctionDefinitionNode::compile(map<string,string> &symbolTable) {
 	symbolTable[name] = isSFunction? naughtToC["string"] : naughtToC["int"];
 	// can possible run other checks here.
+}
+
+inline FunctionDefinitionNode::~FunctionDefinitionNode() {
+	delete block;
 }
 
 #endif //FUNC_DEF_NODE_H
