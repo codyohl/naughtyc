@@ -13,22 +13,16 @@ using namespace std;
 
 class Node {
   public:
-
-    // Node();
-    // virtual ~Node();
-
-    // signature of the node method that will 
-    virtual void printNode(ofstream &out, map<string, string> &symbol_table, int numTabs);
-
-    // method used to print the node, for debugging.
-    friend std::ostream& operator<< (std::ostream &out, const Node &node);
+    // signature of the node method that will print the node  (overridden by sub nodes.)
+    virtual void printNode(ofstream &out, map<string, string> &symbolTable, int numTabs);
+    // virtual destructor.
+    virtual ~Node();
 };
 
-// inline Node::Node() { }
-// inline Node::~Node() { }
-
-friend std::ostream& operator<< (std::ostream &out, const Node &node) {
-  return out << "Node { }";
+inline void Node::printNode(ofstream &out, map<string, string> &symbolTable, int numTabs) {
+  out << " Basic Node ";
 }
+
+inline Node::~Node() {}
 
 #endif //NODE_H

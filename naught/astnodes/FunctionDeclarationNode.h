@@ -2,6 +2,10 @@
 #define FUNC_DEC_NODE_H
 
 // include possible sub-nodes
+#include "Types.h"
+#include "Node.h"
+#include "ParameterNode.h"
+
 #include <map>
 #include <iostream>
 #include <fstream>
@@ -14,28 +18,60 @@
 using namespace std;
 
 /* The Top level Node of an AST. */
-class FunctionDeclarationNode {
-private:
-
+class FunctionDeclarationNode : public Node {
+protected:
+string name;
+bool isSFunction;
+vector<ParameterNode*> parameterList;
 
 public:
-	FunctionDeclarationNode();
+	FunctionDeclarationNode(string* id, bool isSFunction, vector<ParameterNode*>* params);
 
 	~FunctionDeclarationNode();
 
-	void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
+	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
+
+	void compile(map<string,string> &symbolTable);
 };
 
-inline FunctionDeclarationNode::FunctionDeclarationNode() {
-
+inline FunctionDeclarationNode::FunctionDeclarationNode(string* id, bool isSFunction, vector<ParameterNode*>* params) {
+	this->name = *id;
+	this->isSFunction = isSFunction;
+	this->parameterList = *params;
+	delete params;
+	delete id;
 }
 
 inline void FunctionDeclarationNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
+	compile(symbolTable);
 	
+	string retType = isSFunction?  naughtToC["string"] : naughtToC["int"];
+
+	out << retType << " " << name << "(";
+
+	for (unsigned int i = 0; i < parameterList.size(); i++) {
+		parameterList[i]->printNode(out, symbolTable, numTabs);
+		if (i != parameterList.size()-1)
+			out << ", ";
+	}
+	out << ");" << endl;
+
+}
+
+/* runs compile time checks on the node */
+inline void FunctionDeclarationNode::compile(map<string,string> &symbolTable) {
+	// if (!validateName(name))
+	// 	err("Invalid name for function: %s", name);
+	if (symbolTable.count(name)) {
+		 cout << "Error: " << "Multiple function declarations found: " << name;
+		 exit(2);
+	}
+	symbolTable[name] = isSFunction? naughtToC["string"] : naughtToC["int"];
 }
 
 inline FunctionDeclarationNode::~FunctionDeclarationNode() {
-
+	for (auto p : parameterList)
+		delete p;
 }
 
 #endif //FUNC_DEC_NODE_H

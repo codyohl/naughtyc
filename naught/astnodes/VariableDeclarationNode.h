@@ -2,13 +2,17 @@
 #define VAR_DEC_NODE_H
 
 // include possible sub-nodes
+#include "Types.h"
+#include "Node.h"
 #include <map>
+#include <string>
+#include <cstring>
 
 using namespace std;
 
 /* The Top level Node of an AST. */
-class VariableDeclarationNode {
-private:
+class VariableDeclarationNode : public Node {
+protected:
 
 
 public:
@@ -17,6 +21,8 @@ public:
 	~VariableDeclarationNode();
 
 	void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
+
+	void compile(map<string,string> &symbolTable);
 };
 
 inline VariableDeclarationNode::VariableDeclarationNode() {
@@ -24,27 +30,24 @@ inline VariableDeclarationNode::VariableDeclarationNode() {
 }
 
 inline void VariableDeclarationNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
+	compile(symbolTable);
+
 	out << "Variable Declaration node" << endl;
 }
 
 inline VariableDeclarationNode::~VariableDeclarationNode() {
-	// if (funcdecs) {
-	// 	for( auto item : funcdecs)
-	// 		delete item;
-	// 	delete funcdecs;
+}
+
+/* runs compile time checks on the node */
+inline void VariableDeclarationNode::compile(map<string,string> &symbolTable) {
+	// if (!validateName(name))
+	// 	err("Invalid name for function: %s", name);
+	// if (symbolTable.count(name)) {
+	// 	 cout << "Error: " << "Multiple variable declarations found: " << name;
+	// 	 exit(2);
 	// }
 
-	// if (funcdefs) {
-	// 	for( auto item : funcdefs)
-	// 		delete item;
-	// 	delete funcdefs;
-	// }
-
-	// if (vardecs) {
-	// 	for( auto item : vardecs)
-	// 		delete item;
-	// 	delete vardecs;
-	// }
+	// add our name to the symbol table.
 }
 
 #endif //VAR_DEC_NODE_H

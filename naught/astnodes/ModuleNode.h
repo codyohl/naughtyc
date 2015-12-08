@@ -2,16 +2,20 @@
 #define MODULE_NODE_H
 
 // include possible sub-nodes
+#include "Types.h"
+#include "Node.h"
 #include "FunctionDeclarationNode.h"
 #include "FunctionDefinitionNode.h"
 #include "VariableDeclarationNode.h"
+#include <string>
+#include <cstring>
 #include <map>
 
 using namespace std;
 
 /* The Top level Node of an AST. */
-class ModuleNode {
-private:
+class ModuleNode : public Node {
+protected:
 	vector<FunctionDeclarationNode*> funcdecs;
 	vector<FunctionDefinitionNode*>  funcdefs;
 	vector<VariableDeclarationNode*> vardecs;

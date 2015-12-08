@@ -13,6 +13,9 @@
 #include "astnodes/VariableDeclarationNode.h"
 #include "astnodes/FunctionDefinitionNode.h"
 #include "astnodes/FunctionDeclarationNode.h"
+#include "astnodes/BlockNode.h"
+#include "astnodes/ParameterNode.h"
+#include "astnodes/Types.h"
 
 using namespace std;
 
@@ -27,6 +30,10 @@ extern ModuleNode *AST;
   #include "astnodes/VariableDeclarationNode.h"
   #include "astnodes/FunctionDefinitionNode.h"
   #include "astnodes/FunctionDeclarationNode.h"
+  #include "astnodes/ParameterNode.h"
+  #include "astnodes/Types.h"
+  #include "astnodes/BlockNode.h"
+
 }
 
 /***************************************
@@ -46,6 +53,10 @@ extern ModuleNode *AST;
   std::vector<FunctionDeclarationNode*>* functiondeclarationlist;
   vector<VariableDeclarationNode*>* variabledeclarationlist;
   vector<FunctionDefinitionNode*>*  functiondefinitionlist;
+  ParameterNode* parameter;
+  vector<ParameterNode*>* parameterlist;
+  string* str;
+  BlockNode* blocknode;
 }
 
 /***********************************************************************
@@ -69,10 +80,10 @@ extern ModuleNode *AST;
 
 %token <string_val> LCBRACE RCBRACE RPAREN LPAREN SEMI COMMA EXTERN FUNCTION SFUNCTION RETURN
 
-%token <string_val> TYPE
+%token <str> TYPE
 %token <string_val> STRING_LITERAL
 %token <string_val> INT_LITERAL
-%token <string_val> ID
+%token <str> ID
 
 /**********************************************************
  * Now we're defining the type associated with nodes
@@ -81,7 +92,7 @@ extern ModuleNode *AST;
 
 %type <module> module
 %type <functiondefinition> funcdef
-%type <string_val> block
+%type <blocknode> block
 %type <variabledeclaration> vardecl
 %type <functiondeclaration> funcdecl
 %type <string_val> expr
@@ -91,8 +102,8 @@ extern ModuleNode *AST;
 %type <string_val> stmt_list
 %type <variabledeclarationlist> vardecl_list
 %type <functiondeclarationlist> funcdecl_list
-%type <string_val> param;
-%type <string_val> param_list;
+%type <parameter> param;
+%type <parameterlist> param_list;
 %type <functiondefinitionlist> funcdef_list
 %type <string_val> arglist;
 
@@ -162,23 +173,22 @@ funcdecl_list :
  
 funcdecl :
           FUNCTION ID LPAREN param_list RPAREN
-          { $$ = new FunctionDeclarationNode();
+          { $$ = new FunctionDeclarationNode($2, false,$4);
           }
         | FUNCTION ID LPAREN  RPAREN
           { 
-            $$ = new FunctionDeclarationNode();
+            $$ = new FunctionDeclarationNode($2, false, new vector<ParameterNode*>());
             //$$ = new StrUtil(*$1 + *$2 +*$3 +*$4);
             //cout << *$$ << " -> funcdecl " << endl;
           }
         | SFUNCTION ID LPAREN param_list RPAREN
-          { $$ = new FunctionDeclarationNode();
-            //$$ = new StrUtil(*$1 + *$2 +*$3 +*$4 +*$5);
+          { 
+            $$ = new FunctionDeclarationNode($2, true, $4);
             //cout << *$$ << " -> funcdecl " << endl;
           }
         | SFUNCTION ID LPAREN  RPAREN
-          { $$ = new FunctionDeclarationNode();
-            //$$ = new StrUtil(*$1 + *$2 +*$3 +*$4);
-            //cout << *$$ << " -> funcdecl " << endl;
+          { 
+            $$ = new FunctionDeclarationNode($2, true, new vector<ParameterNode*>());
           }
 	;
 
@@ -214,7 +224,7 @@ funcdef_list :
          funcdef 
          {
           $$ = new vector<FunctionDefinitionNode*>();
-          //$$->push_back($1);
+          $$->push_back($1);
          }
        | funcdef_list funcdef
          {
@@ -225,57 +235,47 @@ funcdef_list :
 
 funcdef :
 	  FUNCTION ID LPAREN param_list RPAREN block
-          { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5 + *$6);
-            //cout << *$$ << " -> funcdef " << endl;
+          { $$ = new FunctionDefinitionNode($2, false, $4, $6);
           }
         | FUNCTION ID LPAREN RPAREN block
-          { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
-            //cout << *$$ << " -> funcdef " << endl;
+          { $$ = new FunctionDefinitionNode($2, false, new vector<ParameterNode*>(), $5);
           }
 	| SFUNCTION ID LPAREN param_list RPAREN block
-          { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5 + *$6);
-            //cout << *$$ << " -> funcdef " << endl;
+          { $$ = new FunctionDefinitionNode($2, true, $4, $6);
           }
         | SFUNCTION ID LPAREN RPAREN block
-          { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
-            //cout << *$$ << " -> funcdef " << endl;
+          { $$ = new FunctionDefinitionNode($2, true, new vector<ParameterNode*>(), $5);
           }
         ;
 
 param_list : 
           param_list COMMA param
-          { //$$ = new StrUtil(*$1 + *$2 + *$3);
-            //cout << *$$ << " -> param_list " << endl;
+          { $1->push_back($3);
           }
         | param
-          { //$$ = new StrUtil(*$1);
-            //cout << *$$ << " -> param_list " << endl;
+          { $$ = new vector<ParameterNode*>();
+            $$->push_back($1);
           }
         ;
 
 param :
          TYPE ID
-          { //$$ = new StrUtil(*$1 + *$2);
-            //cout << *$$ << " -> param " << endl;
+          { $$ = new ParameterNode($1, $2);
           }
         ;
 
 block : 
 	  LCBRACE vardecl_list stmt_list RCBRACE
-          { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4);
-            //cout << *$$ << " -> block " << endl;
+          { $$ = new BlockNode();//$1, $2);
           }
 	| LCBRACE              stmt_list RCBRACE
-          { //$$ = new StrUtil(*$1 + *$2 + *$3);
-            //cout << *$$ << " -> block " << endl;
+          { $$ = new BlockNode();//new vector<VariableDeclarationNode*>(), $1);
           }
 	| LCBRACE vardecl_list           RCBRACE
-          { //$$ = new StrUtil(*$1 + *$2 + *$3);
-            //cout << *$$ << " -> block " << endl;
+          { $$ = new BlockNode();//$1, new vector<StatementNode*>());
           }
         | LCBRACE RCBRACE
-          { //$$ = new StrUtil(*$1 + *$2);
-            //cout << *$$ << " -> block " << endl;
+          { $$ = new BlockNode();//new vector<VariableDeclarationNode*>(), new vector<StatementNode*>());
           }
         ;
 
