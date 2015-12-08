@@ -21,27 +21,31 @@ using namespace std;
 
 class VariableDeclarationAssignNode : public VariableDeclarationNode {
 protected:
-	//ExpressionNode* assignExpr; in subclass 
+	ExpressionNode* assignExpr;
 
 public:
-	VariableDeclarationAssignNode();//string* t, string* n, bool ext, ExpressionNode* expr) : VariableDeclarationNode(t, n, ext);
+	VariableDeclarationAssignNode(string* t, string* n, bool ext, ExpressionNode* expr);
 
 	~VariableDeclarationAssignNode();
 
 	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp);
 };
 
-inline VariableDeclarationAssignNode::VariableDeclarationAssignNode() {//string* t, string* n, bool ext, ExpressionNode* expr) : VariableDeclarationNode(t, n, ext) {
-	// this->assignExpr = expr;
+inline VariableDeclarationAssignNode::VariableDeclarationAssignNode(string* t, string* n, bool ext, ExpressionNode* expr) 
+																	: VariableDeclarationNode(t, n, ext) {
+	 this->assignExpr = expr;
 }
 
 inline void VariableDeclarationAssignNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) {
-	
-	out << "VariableDeclarationAssignNode";
+	auto p  = assignExpr->evaluate(out, symbolTable, numTabs, temp);
+	if (isExtern) {
+		out << "extern ";
+	}
+	out << type << " " << name << " = " << p.first << ";" << endl;
 }
 
 inline VariableDeclarationAssignNode::~VariableDeclarationAssignNode() {
-	//delete assignExpr;
+	delete assignExpr;
 }
 
 #endif //VARIABLE_DECL_ASSIGN_NODE_H

@@ -19,30 +19,32 @@ using namespace std;
 
 class VariableDeclarationNode : public Node {
 protected:
- // string name;
- // string type;
- // bool isExtern;			
+  string name;
+  string type;
+  bool isExtern;			
 
 public:
-	VariableDeclarationNode();//string* t, string* n, bool ext);
+	VariableDeclarationNode(string* t, string* n, bool ext);
 
 	~VariableDeclarationNode();
 
 	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp);
 };
 
-inline VariableDeclarationNode::VariableDeclarationNode() {//string* t, string* n, bool ext) {
-	// this->type = *t;
-	// this->name = *n;
-	// this->isExterm = ext;
+inline VariableDeclarationNode::VariableDeclarationNode(string* t, string* n, bool ext) {
+	 this->type = *t;
+	 this->name = *n;
+	 this->isExtern = ext;
 
-	// delete t;
-	// delete n;
+	 delete t;
+	 delete n;
 }
 
 inline void VariableDeclarationNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) {
-	
-	out << "VariableDeclarationNode";
+	if (isExtern) {
+		out << "extern ";
+	}
+	out << type << " " << name << ";" << endl;
 }
 
 inline VariableDeclarationNode::~VariableDeclarationNode() {
