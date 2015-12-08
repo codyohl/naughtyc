@@ -8,12 +8,13 @@
 
 #include "yy.h"
 #include "StrUtil.h"
+#include "astnodes/ModuleNode.h"
 
 using namespace std;
 
 extern int _WANT_DEBUG;
 
-extern StrUtil *AST;
+extern ModuleNode *AST;
 
 
 %}
@@ -28,6 +29,7 @@ extern StrUtil *AST;
  ***************************************/
 %union {
   StrUtil*    string_val;
+  ModuleNode * module;
 }
 
 /***********************************************************************
@@ -94,44 +96,36 @@ extern StrUtil *AST;
 
 module :
          funcdecl_list vardecl_list funcdef_list
-          { AST = new StrUtil(*$1 + *$2 + *$3);
+          { AST = new ModuleNode($1, $2, $3);
             $$ = AST;
-            cout << *$$ << " -> module " << endl;
           }
         |              vardecl_list funcdef_list
-          { AST = new StrUtil(*$1 + *$2);
+          { AST = new ModuleNode(NULL ,$1, $2);
             $$ = AST;
-            cout << *$$ << " -> module " << endl;
           }
         | funcdecl_list             funcdef_list
-          { AST = new StrUtil(*$1 + *$2);
+          { AST = new ModuleNode($1, NULL, $2);
             $$ = AST;
-            cout << *$$ << " -> module " << endl;
           }
         |                            funcdef_list
-          { AST = new StrUtil(*$1);
+          { AST = new ModuleNode(NULL, NULL, $1);
             $$ = AST;
-            cout << *$$ << " -> module " << endl;
           }
         | funcdecl_list vardecl_list
-          { AST = new StrUtil(*$1 + *$2);
+          { AST = new ModuleNode($1, $2, NULL);
             $$ = AST;
-            cout << *$$ << " -> module " << endl;
           }
         |              vardecl_list
-          { AST = new StrUtil(*$1);
+          { AST = new ModuleNode(NULL, $1, NULL);
             $$ = AST;
-            cout << *$$ << " -> module " << endl;
           }
         | funcdecl_list             
-          { AST = new StrUtil(*$1);
+          { AST = new ModuleNode($1, NULL, NULL);
             $$ = AST;
-            cout << *$$ << " -> module " << endl;
           }
         |
-          { AST = new StrUtil(string());
+          { AST = new ModuleNode(NULL, NULL, NULL);
             $$ = AST;
-            cout << *$$ << " -> module " << endl;
           }
         ;
 
