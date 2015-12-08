@@ -27,23 +27,7 @@ inline void FunctionDeclarationNode::printNode(ofstream* out, map<string,string>
 }
 
 inline FunctionDeclarationNode::~FunctionDeclarationNode() {
-	// if (funcdecs) {
-	// 	for( auto item : funcdecs)
-	// 		delete item;
-	// 	delete funcdecs;
-	// }
-
-	// if (funcdefs) {
-	// 	for( auto item : funcdefs)
-	// 		delete item;
-	// 	delete funcdefs;
-	// }
-
-	// if (vardecs) {
-	// 	for( auto item : vardecs)
-	// 		delete item;
-	// 	delete vardecs;
-	// }
+	
 }
 
 #endif //FUNC_DEC_NODE_H
