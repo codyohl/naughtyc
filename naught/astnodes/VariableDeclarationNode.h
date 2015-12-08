@@ -2,6 +2,7 @@
 #define VAR_DEC_NODE_H
 
 // include possible sub-nodes
+#include <map>
 
 using namespace std;
 
@@ -15,15 +16,15 @@ public:
 
 	~VariableDeclarationNode();
 
-	printNode();
+	void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
 };
 
 inline VariableDeclarationNode::VariableDeclarationNode() {
 
 }
 
-inline void VariableDeclarationNode::printNode(ofstream* out, map<string,string> symbolTable, int numTabs) {
-	out << "Variable Declaration NOde" << endl;
+inline void VariableDeclarationNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
+	out << "Variable Declaration node" << endl;
 }
 
 inline VariableDeclarationNode::~VariableDeclarationNode() {

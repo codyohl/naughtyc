@@ -79,7 +79,7 @@ int main(int argc, char **argv)
   // verify?
 
   // Generate code
-  AST->printNode(&output);
+  AST->printNode(output);
 
   // clean up
   delete AST;

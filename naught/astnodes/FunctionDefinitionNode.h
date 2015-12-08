@@ -2,6 +2,13 @@
 #define FUNC_DEF_NODE_H
 
 // include possible sub-nodes
+#include <map>
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <vector>
+#include <string>
+#include <cstring>
 
 using namespace std;
 
@@ -15,14 +22,14 @@ public:
 
 	~FunctionDefinitionNode();
 
-	printNode();
+	void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
 };
 
 inline FunctionDefinitionNode::FunctionDefinitionNode() {
 
 }
 
-inline void FunctionDefinitionNode::printNode(ofstream* out, map<string,string> symbolTable, int numTabs) {
+inline void FunctionDefinitionNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
 	out << "FunctionDefinitionNode" << endl;
 }
 
