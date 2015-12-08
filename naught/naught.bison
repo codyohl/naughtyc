@@ -24,6 +24,7 @@
 #include "astnodes/TermIDNode.h"
 #include "astnodes/TermNode.h"
 #include "astnodes/Types.h"
+#include "astnodes/TermExpressionNode.h"
 
 using namespace std;
 
@@ -49,7 +50,7 @@ extern ModuleNode *AST;
   #include "astnodes/TermLiteralNode.h"
   #include "astnodes/TermNode.h"
   #include "astnodes/TermIDNode.h"
-
+  #include "astnodes/TermExpressionNode.h"
 }
 
 /***************************************
@@ -350,7 +351,7 @@ term :
         { $$ = new TermIDNode($1);
         }
       | LPAREN expr RPAREN
-       { //$$ = new StrUtil( *$1 + *$2 + *$3 );
+       { $$ = new TermExpressionNode($2);
          //cout << *$$ << " -> term" << endl;
         }
       | UNARY_OP term
