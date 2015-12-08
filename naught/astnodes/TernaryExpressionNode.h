@@ -50,7 +50,7 @@ inline pair<string, string> TernaryExpressionNode::evaluate(ofstream &out, map<s
 	auto ifFalseExp   = ifFalse->evaluate (out, symbolTable, numTabs, temp);
 	
 	// create an if statement
-	out << ifTrueExp.second << " temp" << temp << ";" << endl;
+	out << naughtToC[ifTrueExp.second] << " temp" << temp << ";" << endl;
 	TABS(out, numTabs);
 	out << "if (" << conditionExp.first << ") {" << endl;
 	TABS(out, numTabs + 1);
