@@ -21,6 +21,14 @@ extern ModuleNode *AST;
 
 %}
 
+%code requires {
+  #include "StrUtil.h"
+  #include "astnodes/ModuleNode.h"
+  #include "astnodes/VariableDeclarationNode.h"
+  #include "astnodes/FunctionDefinitionNode.h"
+  #include "astnodes/FunctionDeclarationNode.h"
+}
+
 /***************************************
  * These are the union of the data types
  * that are associated with AST nodes.
@@ -203,8 +211,16 @@ vardecl :
 
 
 funcdef_list :
-         funcdef
+         funcdef 
+         {
+          $$ = new vector<FunctionDefinitionNode*>();
+          //$$->push_back($1);
+         }
        | funcdef_list funcdef
+         {
+          $1->push_back($2);
+          $$ = $1;
+         }
         ;
 
 funcdef :

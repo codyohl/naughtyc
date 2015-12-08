@@ -32,6 +32,10 @@ inline ModuleNode::ModuleNode(vector<FunctionDeclarationNode*>* functionDecs,
 	funcdecs = *functionDecs;
 	funcdefs = *functionDefs;
 	vardecs  = *variableDecs;
+
+	delete functionDecs;
+	delete functionDefs;
+	delete variableDecs;
 }
 
 inline void ModuleNode::printNode(ofstream &out) {
@@ -60,9 +64,6 @@ inline void ModuleNode::printNode(ofstream &out) {
 }
 
 inline ModuleNode::~ModuleNode() {
-	delete &funcdecs;
-	delete &funcdefs;
-	delete &vardecs;
 }
 
 #endif //MODULE_NODE_H
