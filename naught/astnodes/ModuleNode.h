@@ -40,9 +40,9 @@ inline ModuleNode::ModuleNode(vector<FunctionDeclarationNode*>* functionDecs,
 
 inline void ModuleNode::printNode(ofstream &out) {
 	// add the #includes.
-	//out << "#include <stdio.h>"     << endl;
-	//out << "#include <stdlib.h>"    << endl;
-	//out << "#include <nstdlib.h>"   << endl;
+	out << "#include <stdio.h>"     << endl;
+	out << "#include <stdlib.h>"    << endl;
+	out << "#include <nstdlib.h>"   << endl;
 	out << endl << endl;
 
 	//TODO: create the symbol table, add all nstdlib function declarations.
@@ -51,15 +51,15 @@ inline void ModuleNode::printNode(ofstream &out) {
 	int numTabs = 0;
 
 	// prints each item into the file.
-		for (auto f : funcdecs) {
-			f->printNode(out, symbolTable, numTabs);
-		}
-		for (auto f : vardecs) {
-			f->printNode(out, symbolTable, numTabs);
-		}
-		for (auto f : funcdefs) {
-			f->printNode(out, symbolTable, numTabs);
-		}
+	for (auto f : funcdecs) {
+		f->printNode(out, symbolTable, numTabs);
+	}
+	for (auto f : vardecs) {
+		f->printNode(out, symbolTable, numTabs);
+	}
+	for (auto f : funcdefs) {
+		f->printNode(out, symbolTable, numTabs);
+	}
 	out << endl;
 }
 
