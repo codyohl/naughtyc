@@ -10,10 +10,11 @@
 #include <unistd.h>
 
 #include "StrUtil.h"
+#include "astnodes/ModuleNode.h"
 
 #include "yy.h"
 
-StrUtil *AST = nullptr;
+ModuleNode *AST = nullptr;
 
 
 int _WANT_DEBUG = 0;

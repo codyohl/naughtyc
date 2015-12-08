@@ -5,17 +5,19 @@
 #include <string>
 #include <memory>
 #include <cstring>
+#include <vector>
 
 #include "yy.h"
 #include "StrUtil.h"
 #include "astnodes/ModuleNode.h"
+#include "astnodes/VariableDeclarationNode.h"
+#include "astnodes/FunctionDefinitionNode.h"
+#include "astnodes/FunctionDeclarationNode.h"
 
 using namespace std;
 
 extern int _WANT_DEBUG;
-
 extern ModuleNode *AST;
-
 
 %}
 
@@ -29,7 +31,13 @@ extern ModuleNode *AST;
  ***************************************/
 %union {
   StrUtil*    string_val;
-  ModuleNode * module;
+  ModuleNode* module;
+  FunctionDeclarationNode* functiondeclaration;
+  VariableDeclarationNode* variabledeclaration; 
+  FunctionDefinitionNode*  functiondefinition;
+  std::vector<FunctionDeclarationNode*>* functiondeclarationlist;
+  vector<VariableDeclarationNode*>* variabledeclarationlist;
+  vector<FunctionDefinitionNode*>*  functiondefinitionlist;
 }
 
 /***********************************************************************
@@ -63,21 +71,21 @@ extern ModuleNode *AST;
  * corresponding to non-terminals.
  **********************************************************/
 
-%type <string_val> module
-%type <string_val> funcdef
+%type <module> module
+%type <functiondefinition> funcdef
 %type <string_val> block
-%type <string_val> vardecl
-%type <string_val> funcdecl
+%type <variabledeclaration> vardecl
+%type <functiondeclaration> funcdecl
 %type <string_val> expr
 %type <string_val> term
 %type <string_val> stmt
 
 %type <string_val> stmt_list
-%type <string_val> vardecl_list
-%type <string_val> funcdecl_list
+%type <variabledeclarationlist> vardecl_list
+%type <functiondeclarationlist> funcdecl_list
 %type <string_val> param;
 %type <string_val> param_list;
-%type <string_val> funcdef_list
+%type <functiondefinitionlist> funcdef_list
 %type <string_val> arglist;
 
 /*********************************************
@@ -131,58 +139,65 @@ module :
 
 funcdecl_list :
           funcdecl_list funcdecl SEMI
-          { $$ = new StrUtil(*$1 + *$2 + *$3);
-            cout << *$$ << " -> funcdecl_list " << endl;
+          { $1->push_back($2);
+            $$ = $1;
+            //$$ = new StrUtil(*$1 + *$2 + *$3);
+            ////cout << *$$ << " -> funcdecl_list " << endl;
           }
         | funcdecl SEMI
-          { $$ = new StrUtil(*$1 + *$2);
-            cout << *$$ << " -> funcdecl_list " << endl;
+          { $$ = new vector<FunctionDeclarationNode*>();
+            $$->push_back($1);
+            //$$ = new StrUtil(*$1 + *$2);
+            ////cout << *$$ << " -> funcdecl_list " << endl;
           }
        ;
  
 funcdecl :
           FUNCTION ID LPAREN param_list RPAREN
-          { $$ = new StrUtil(*$1 + *$2 +*$3 +*$4 +*$5);
-            cout << *$$ << " -> funcdecl " << endl;
+          { $$ = new FunctionDeclarationNode();
           }
         | FUNCTION ID LPAREN  RPAREN
-          { $$ = new StrUtil(*$1 + *$2 +*$3 +*$4);
-            cout << *$$ << " -> funcdecl " << endl;
+          { 
+            $$ = new FunctionDeclarationNode();
+            //$$ = new StrUtil(*$1 + *$2 +*$3 +*$4);
+            //cout << *$$ << " -> funcdecl " << endl;
           }
         | SFUNCTION ID LPAREN param_list RPAREN
-          { $$ = new StrUtil(*$1 + *$2 +*$3 +*$4 +*$5);
-            cout << *$$ << " -> funcdecl " << endl;
+          { $$ = new FunctionDeclarationNode();
+            //$$ = new StrUtil(*$1 + *$2 +*$3 +*$4 +*$5);
+            //cout << *$$ << " -> funcdecl " << endl;
           }
         | SFUNCTION ID LPAREN  RPAREN
-          { $$ = new StrUtil(*$1 + *$2 +*$3 +*$4);
-            cout << *$$ << " -> funcdecl " << endl;
+          { $$ = new FunctionDeclarationNode();
+            //$$ = new StrUtil(*$1 + *$2 +*$3 +*$4);
+            //cout << *$$ << " -> funcdecl " << endl;
           }
 	;
 
 
 vardecl_list : 
           vardecl_list vardecl SEMI
-          { $$ = new StrUtil(*$1 + *$2 +*$3);
-            cout << *$$ << " -> vardecl_list " << endl;
+          { $1->push_back($2);
+            $$ = $1;
           }
         | vardecl SEMI
-          { $$ = new StrUtil(*$1 + *$2);
-            cout << *$$ << " -> vardecl_list " << endl;
+          { $$ = new vector<VariableDeclarationNode*>();
+            $$->push_back($1);
           }
         ;
 
 vardecl : 
          TYPE ID
-          { $$ = new StrUtil(*$1 + *$2);
-            cout << *$$ << " -> vardecl " << endl;
+          { //$$ = new StrUtil(*$1 + *$2);
+            //cout << *$$ << " -> vardecl " << endl;
           }
        | TYPE ID ASSIGN expr
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4);
-            cout << *$$ << " -> vardecl " << endl;
+          { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4);
+            //cout << *$$ << " -> vardecl " << endl;
           }
        | EXTERN TYPE ID  /* extern variable */
-          { $$ = new StrUtil(*$1 + *$2);
-            cout << *$$ << " -> vardecl " << endl;
+          { //$$ = new StrUtil(*$1 + *$2);
+            //cout << *$$ << " -> vardecl " << endl;
           }
        ;
 
@@ -194,152 +209,152 @@ funcdef_list :
 
 funcdef :
 	  FUNCTION ID LPAREN param_list RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5 + *$6);
-            cout << *$$ << " -> funcdef " << endl;
+          { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5 + *$6);
+            //cout << *$$ << " -> funcdef " << endl;
           }
         | FUNCTION ID LPAREN RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
-            cout << *$$ << " -> funcdef " << endl;
+          { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
+            //cout << *$$ << " -> funcdef " << endl;
           }
 	| SFUNCTION ID LPAREN param_list RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5 + *$6);
-            cout << *$$ << " -> funcdef " << endl;
+          { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5 + *$6);
+            //cout << *$$ << " -> funcdef " << endl;
           }
         | SFUNCTION ID LPAREN RPAREN block
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
-            cout << *$$ << " -> funcdef " << endl;
+          { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
+            //cout << *$$ << " -> funcdef " << endl;
           }
         ;
 
 param_list : 
           param_list COMMA param
-          { $$ = new StrUtil(*$1 + *$2 + *$3);
-            cout << *$$ << " -> param_list " << endl;
+          { //$$ = new StrUtil(*$1 + *$2 + *$3);
+            //cout << *$$ << " -> param_list " << endl;
           }
         | param
-          { $$ = new StrUtil(*$1);
-            cout << *$$ << " -> param_list " << endl;
+          { //$$ = new StrUtil(*$1);
+            //cout << *$$ << " -> param_list " << endl;
           }
         ;
 
 param :
          TYPE ID
-          { $$ = new StrUtil(*$1 + *$2);
-            cout << *$$ << " -> param " << endl;
+          { //$$ = new StrUtil(*$1 + *$2);
+            //cout << *$$ << " -> param " << endl;
           }
         ;
 
 block : 
 	  LCBRACE vardecl_list stmt_list RCBRACE
-          { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4);
-            cout << *$$ << " -> block " << endl;
+          { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4);
+            //cout << *$$ << " -> block " << endl;
           }
 	| LCBRACE              stmt_list RCBRACE
-          { $$ = new StrUtil(*$1 + *$2 + *$3);
-            cout << *$$ << " -> block " << endl;
+          { //$$ = new StrUtil(*$1 + *$2 + *$3);
+            //cout << *$$ << " -> block " << endl;
           }
 	| LCBRACE vardecl_list           RCBRACE
-          { $$ = new StrUtil(*$1 + *$2 + *$3);
-            cout << *$$ << " -> block " << endl;
+          { //$$ = new StrUtil(*$1 + *$2 + *$3);
+            //cout << *$$ << " -> block " << endl;
           }
         | LCBRACE RCBRACE
-          { $$ = new StrUtil(*$1 + *$2);
-            cout << *$$ << " -> block " << endl;
+          { //$$ = new StrUtil(*$1 + *$2);
+            //cout << *$$ << " -> block " << endl;
           }
         ;
 
 stmt_list :
           stmt_list stmt
-          { $$ = new StrUtil(*$1 + *$2);
-            cout << *$$ << " -> stmt_list " << endl;
+          { //$$ = new StrUtil(*$1 + *$2);
+            //cout << *$$ << " -> stmt_list " << endl;
           }
         | stmt
-          { $$ = new StrUtil(*$1);
-            cout << *$$ << " -> stmt_list " << endl;
+          { //$$ = new StrUtil(*$1);
+            //cout << *$$ << " -> stmt_list " << endl;
           }
        ;
 
 stmt : 
          expr SEMI
-          { $$ = new StrUtil(*$1 + *$2);
-            cout << *$$ << " -> stmt " << endl;
+          { //$$ = new StrUtil(*$1 + *$2);
+            //cout << *$$ << " -> stmt " << endl;
           }
        | RETURN expr SEMI
-          { $$ = new StrUtil(*$1 + *$2 + *$3);
-            cout << *$$ << " -> stmt " << endl;
+          { //$$ = new StrUtil(*$1 + *$2 + *$3);
+            //cout << *$$ << " -> stmt " << endl;
           }
      ;
 
 expr : 
         expr ADD expr
-        { $$ = new StrUtil(*$1 + *$2 + *$3);
-          cout << *$$ << " -> expr" << endl;
+        { //$$ = new StrUtil(*$1 + *$2 + *$3);
+          //cout << *$$ << " -> expr" << endl;
         }
       | expr SUB expr
-        { $$ = new StrUtil(*$1 + *$2 + *$3);
-          cout << *$$ << " -> expr" << endl;
+        { //$$ = new StrUtil(*$1 + *$2 + *$3);
+          //cout << *$$ << " -> expr" << endl;
         }
       | expr STAR expr
-        { $$ = new StrUtil(*$1 + *$2 + *$3);
-          cout << *$$ << " -> expr" << endl;
+        { //$$ = new StrUtil(*$1 + *$2 + *$3);
+          //cout << *$$ << " -> expr" << endl;
         }
       | expr DIV expr
-        { $$ = new StrUtil(*$1 + *$2 + *$3);
-          cout << *$$ << " -> expr" << endl;
+        { //$$ = new StrUtil(*$1 + *$2 + *$3);
+          //cout << *$$ << " -> expr" << endl;
         }
       | expr QUESTION expr COLON expr
-        { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
-          cout << *$$ << " -> expr" << endl;
+        { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
+          //cout << *$$ << " -> expr" << endl;
         }
       | term  ASSIGN expr
-        { $$ = new StrUtil(*$1 + *$2 + *$3);
-          cout << *$$ << " -> expr" << endl;
+        { //$$ = new StrUtil(*$1 + *$2 + *$3);
+          //cout << *$$ << " -> expr" << endl;
         }
       | term
-        { $$ = new StrUtil(*$1);
-          cout << *$$ << " -> expr" << endl;
+        { //$$ = new StrUtil(*$1);
+          //cout << *$$ << " -> expr" << endl;
         }
       ;
 
 term :
         STRING_LITERAL
-        { $$ = new StrUtil(*$1);
-          cout << *$$ << " -> term" << endl;
+        { //$$ = new StrUtil(*$1);
+          //cout << *$$ << " -> term" << endl;
         }
       | INT_LITERAL
-        { $$ = new StrUtil(*$1);
-          cout << *$$ << " -> term" << endl;
+        { //$$ = new StrUtil(*$1);
+          //cout << *$$ << " -> term" << endl;
         }
       | ID
-        { $$ = new StrUtil(*$1);
-          cout << *$$ << " -> term" << endl;
+        { //$$ = new StrUtil(*$1);
+          //cout << *$$ << " -> term" << endl;
         }
       | LPAREN expr RPAREN
-       { $$ = new StrUtil( *$1 + *$2 + *$3 );
-         cout << *$$ << " -> term" << endl;
+       { //$$ = new StrUtil( *$1 + *$2 + *$3 );
+         //cout << *$$ << " -> term" << endl;
         }
       | UNARY_OP term
-        { $$ = new StrUtil( *$1 + *$2);
-          cout << *$$ << " -> term" << endl;
+        { //$$ = new StrUtil( *$1 + *$2);
+          //cout << *$$ << " -> term" << endl;
         }
       | ID LPAREN arglist RPAREN  /* function call */
-       { $$ = new StrUtil(*$1 + *$2 + *$3 + *$4);
-         cout << *$$ << " -> term" << endl;
+       { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4);
+         //cout << *$$ << " -> term" << endl;
        }
       | ID LPAREN RPAREN  /* function call */
-       { $$ = new StrUtil(*$1 + *$2 + *$3);
-         cout << *$$ << " -> term" << endl;
+       { //$$ = new StrUtil(*$1 + *$2 + *$3);
+         //cout << *$$ << " -> term" << endl;
        }
       ;
 
 arglist :
         expr
-        { $$ = new StrUtil(*$1);
-          cout << *$$ << " -> arglist" << endl;
+        { //$$ = new StrUtil(*$1);
+          //cout << *$$ << " -> arglist" << endl;
         }
       | arglist COMMA expr
-        { $$ = new StrUtil( *$1 + *$2 + *$3 );
-        cout << *$$ << " -> arglist" << endl;
+        { //$$ = new StrUtil( *$1 + *$2 + *$3 );
+        //cout << *$$ << " -> arglist" << endl;
         }
       ;
 
