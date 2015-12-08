@@ -100,31 +100,31 @@ module :
             $$ = AST;
           }
         |              vardecl_list funcdef_list
-          { AST = new ModuleNode(NULL ,$1, $2);
+          { AST = new ModuleNode(new vector<FunctionDeclarationNode *>() ,$1, $2);
             $$ = AST;
           }
         | funcdecl_list             funcdef_list
-          { AST = new ModuleNode($1, NULL, $2);
+          { AST = new ModuleNode($1, new vector<VariableDeclarationNode *>(), $2);
             $$ = AST;
           }
         |                            funcdef_list
-          { AST = new ModuleNode(NULL, NULL, $1);
+          { AST = new ModuleNode(new vector<FunctionDeclarationNode *>(), new vector<VariableDeclarationNode *>(), $1);
             $$ = AST;
           }
         | funcdecl_list vardecl_list
-          { AST = new ModuleNode($1, $2, NULL);
+          { AST = new ModuleNode($1, $2, new vector<FunctionDefinitionNode *>());
             $$ = AST;
           }
         |              vardecl_list
-          { AST = new ModuleNode(NULL, $1, NULL);
+          { AST = new ModuleNode(new vector<FunctionDeclarationNode *>(), $1, new vector<FunctionDefinitionNode *>());
             $$ = AST;
           }
         | funcdecl_list             
-          { AST = new ModuleNode($1, NULL, NULL);
+          { AST = new ModuleNode($1, new vector<VariableDeclarationNode *>(), new vector<FunctionDefinitionNode *>());
             $$ = AST;
           }
         |
-          { AST = new ModuleNode(NULL, NULL, NULL);
+          { AST = new ModuleNode(new vector<FunctionDeclarationNode *>(), new vector<VariableDeclarationNode *>(), new vector<FunctionDefinitionNode *>());
             $$ = AST;
           }
         ;
