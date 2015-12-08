@@ -2,7 +2,7 @@ function test (int i);
 
 function test (int i ) {
 int j = 0; 
-int k;
+int k = j;
 5 + 3;
 9 - 7;
 989898;
