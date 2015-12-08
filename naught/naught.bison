@@ -13,6 +13,9 @@
 #include "astnodes/VariableDeclarationNode.h"
 #include "astnodes/FunctionDefinitionNode.h"
 #include "astnodes/FunctionDeclarationNode.h"
+#include "astnodes/VariableDeclarationNode.h"
+#include "astnodes/VariableDeclarationAssignNode.h"
+#include "astnodes/StatementNode.h"
 #include "astnodes/BlockNode.h"
 #include "astnodes/ParameterNode.h"
 #include "astnodes/Types.h"
@@ -33,6 +36,9 @@ extern ModuleNode *AST;
   #include "astnodes/ParameterNode.h"
   #include "astnodes/Types.h"
   #include "astnodes/BlockNode.h"
+  #include "astnodes/VariableDeclarationNode.h"
+  #include "astnodes/VariableDeclarationAssignNode.h"
+  #include "astnodes/StatementNode.h"
 
 }
 
@@ -49,14 +55,18 @@ extern ModuleNode *AST;
   ModuleNode* module;
   FunctionDeclarationNode* functiondeclaration;
   VariableDeclarationNode* variabledeclaration; 
+  VariableDeclarationAssignNode* variabledeclarationassign;
   FunctionDefinitionNode*  functiondefinition;
+  ParameterNode* parameter;
+  string* str;
+  BlockNode* blocknode;
+  StatementNode* stat;
+
+  vector<StatementNode*>* statementlist;
+  vector<ParameterNode*>* parameterlist;
   std::vector<FunctionDeclarationNode*>* functiondeclarationlist;
   vector<VariableDeclarationNode*>* variabledeclarationlist;
   vector<FunctionDefinitionNode*>*  functiondefinitionlist;
-  ParameterNode* parameter;
-  vector<ParameterNode*>* parameterlist;
-  string* str;
-  BlockNode* blocknode;
 }
 
 /***********************************************************************
@@ -97,9 +107,9 @@ extern ModuleNode *AST;
 %type <functiondeclaration> funcdecl
 %type <string_val> expr
 %type <string_val> term
-%type <string_val> stmt
+%type <stat> stmt
 
-%type <string_val> stmt_list
+%type <statementlist> stmt_list
 %type <variabledeclarationlist> vardecl_list
 %type <functiondeclarationlist> funcdecl_list
 %type <parameter> param;
@@ -160,14 +170,10 @@ funcdecl_list :
           funcdecl_list funcdecl SEMI
           { $1->push_back($2);
             $$ = $1;
-            //$$ = new StrUtil(*$1 + *$2 + *$3);
-            ////cout << *$$ << " -> funcdecl_list " << endl;
           }
         | funcdecl SEMI
           { $$ = new vector<FunctionDeclarationNode*>();
             $$->push_back($1);
-            //$$ = new StrUtil(*$1 + *$2);
-            ////cout << *$$ << " -> funcdecl_list " << endl;
           }
        ;
  
@@ -178,13 +184,10 @@ funcdecl :
         | FUNCTION ID LPAREN  RPAREN
           { 
             $$ = new FunctionDeclarationNode($2, false, new vector<ParameterNode*>());
-            //$$ = new StrUtil(*$1 + *$2 +*$3 +*$4);
-            //cout << *$$ << " -> funcdecl " << endl;
           }
         | SFUNCTION ID LPAREN param_list RPAREN
           { 
             $$ = new FunctionDeclarationNode($2, true, $4);
-            //cout << *$$ << " -> funcdecl " << endl;
           }
         | SFUNCTION ID LPAREN  RPAREN
           { 
@@ -206,16 +209,13 @@ vardecl_list :
 
 vardecl : 
          TYPE ID
-          { //$$ = new StrUtil(*$1 + *$2);
-            //cout << *$$ << " -> vardecl " << endl;
+          { $$ = new VariableDeclarationNode();//$1, $2, false);
           }
        | TYPE ID ASSIGN expr
-          { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4);
-            //cout << *$$ << " -> vardecl " << endl;
+          { $$ = new VariableDeclarationAssignNode();//$1, $2, false, $4);
           }
        | EXTERN TYPE ID  /* extern variable */
-          { //$$ = new StrUtil(*$1 + *$2);
-            //cout << *$$ << " -> vardecl " << endl;
+          { $$ = new VariableDeclarationNode();//$1, $2, true);
           }
        ;
 
@@ -266,38 +266,36 @@ param :
 
 block : 
 	  LCBRACE vardecl_list stmt_list RCBRACE
-          { $$ = new BlockNode();//$1, $2);
+          { $$ = new BlockNode($2, $3);
           }
 	| LCBRACE              stmt_list RCBRACE
-          { $$ = new BlockNode();//new vector<VariableDeclarationNode*>(), $1);
+          { $$ = new BlockNode(new vector<VariableDeclarationNode*>(), $2);
           }
 	| LCBRACE vardecl_list           RCBRACE
-          { $$ = new BlockNode();//$1, new vector<StatementNode*>());
+          { $$ = new BlockNode($2, new vector<StatementNode*>());
           }
         | LCBRACE RCBRACE
-          { $$ = new BlockNode();//new vector<VariableDeclarationNode*>(), new vector<StatementNode*>());
+          { $$ = new BlockNode(new vector<VariableDeclarationNode*>(), new vector<StatementNode*>());
           }
         ;
 
 stmt_list :
           stmt_list stmt
-          { //$$ = new StrUtil(*$1 + *$2);
-            //cout << *$$ << " -> stmt_list " << endl;
+          { $1->push_back($2);
+            $$ = $1;
           }
         | stmt
-          { //$$ = new StrUtil(*$1);
-            //cout << *$$ << " -> stmt_list " << endl;
+          { $$ = new vector<StatementNode*>();
+            $$->push_back($1);
           }
        ;
 
 stmt : 
          expr SEMI
-          { //$$ = new StrUtil(*$1 + *$2);
-            //cout << *$$ << " -> stmt " << endl;
+          { $$ = new StatementNode();//false, $1);
           }
        | RETURN expr SEMI
-          { //$$ = new StrUtil(*$1 + *$2 + *$3);
-            //cout << *$$ << " -> stmt " << endl;
+          { $$ = new StatementNode();//true, $2);
           }
      ;
 

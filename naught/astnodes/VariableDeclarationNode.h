@@ -1,53 +1,52 @@
-#ifndef VAR_DEC_NODE_H
-#define VAR_DEC_NODE_H
+#ifndef VARIABLE_DECL_NODE_H
+#define VARIABLE_DECL_NODE_H
 
 // include possible sub-nodes
 #include "Types.h"
 #include "Node.h"
+#include "ParameterNode.h"
+//#include "ExpressionNode.h"
+#include "StatementNode.h"
+
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <vector>
 #include <map>
 #include <string>
 #include <cstring>
 
 using namespace std;
 
-/* The Top level Node of an AST. */
 class VariableDeclarationNode : public Node {
 protected:
-
+ // string name;
+ // string type;
+ // bool isExtern;			 // ExpressionNode* assignExpr; in subclass 
 
 public:
-	VariableDeclarationNode();
+	VariableDeclarationNode();//string* t, string* n, bool ext);
 
 	~VariableDeclarationNode();
 
-	void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
-
-	void compile(map<string,string> &symbolTable);
+	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
 };
 
-inline VariableDeclarationNode::VariableDeclarationNode() {
+inline VariableDeclarationNode::VariableDeclarationNode() {//string* t, string* n, bool ext) {
+	// this->type = *t;
+	// this->name = *n;
+	// this->isExterm = ext;
 
+	// delete t;
+	// delete n;
 }
 
 inline void VariableDeclarationNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
-	compile(symbolTable);
-
-	out << "Variable Declaration node" << endl;
+	
+	out << "VariableDeclarationNode";
 }
 
 inline VariableDeclarationNode::~VariableDeclarationNode() {
 }
 
-/* runs compile time checks on the node */
-inline void VariableDeclarationNode::compile(map<string,string> &symbolTable) {
-	// if (!validateName(name))
-	// 	err("Invalid name for function: %s", name);
-	// if (symbolTable.count(name)) {
-	// 	 cout << "Error: " << "Multiple variable declarations found: " << name;
-	// 	 exit(2);
-	// }
-
-	// add our name to the symbol table.
-}
-
-#endif //VAR_DEC_NODE_H
+#endif //VARIABLE_DECL_NODE_H

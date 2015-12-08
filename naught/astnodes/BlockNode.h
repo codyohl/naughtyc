@@ -4,6 +4,8 @@
 // include possible sub-nodes
 #include "Types.h"
 #include "Node.h"
+#include "VariableDeclarationNode.h"
+#include "StatementNode.h"
 #include "ParameterNode.h"
 
 #include <map>
@@ -19,25 +21,36 @@ using namespace std;
 
 class BlockNode : public Node {
 protected:
-vector<string*> varDecList;
-vector<string*> stmtList;
+vector<VariableDeclarationNode*> varDecList;
+vector<StatementNode*> stmtList;
 
 public:
-	BlockNode();//vector<string*>* variabledecs, vector<string*>* statements);
+	BlockNode(vector<VariableDeclarationNode*>* variabledecs, vector<StatementNode*>* statements);
 
 	~BlockNode();
 
 	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
 };
 
-inline BlockNode::BlockNode(){//vector<string*>* variabledecs, vector<string*>* statements) {
-	// this->varDecList = *variabledecs;
-	// this->stmtList = *statements;
+inline BlockNode::BlockNode(vector<VariableDeclarationNode*>* variabledecs, vector<StatementNode*>* statements) {
+	this->varDecList = *variabledecs;
+	this->stmtList = *statements;
+
+	delete variabledecs;
+	delete statements;
 }
 
 inline void BlockNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
-	TABS(out, numTabs);
-	out << "Block node" << endl;
+	for( auto v : varDecList ) {
+		TABS(out, numTabs);
+		v->printNode(out, symbolTable, numTabs);
+		out << endl;
+	}
+	for( auto s : stmtList ) {
+		TABS(out, numTabs);
+		s->printNode(out, symbolTable, numTabs);
+		out << endl;
+	}
 }
 
 inline BlockNode::~BlockNode() {

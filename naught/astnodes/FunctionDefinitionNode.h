@@ -38,7 +38,7 @@ inline FunctionDefinitionNode::FunctionDefinitionNode(string* id, bool isSFuncti
 
 inline void FunctionDefinitionNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
 	compile(symbolTable);
-
+	// gets return type.
 	string retType = isSFunction?  naughtToC["string"] : naughtToC["int"];
 
 	TABS(out, numTabs);
@@ -49,6 +49,7 @@ inline void FunctionDefinitionNode::printNode(ofstream &out, map<string,string> 
 		if (i != parameterList.size()-1)
 			out << ", ";
 	}
+	// now, prints the definition block.
 	out << ") {" << endl;
 	block->printNode(out, symbolTable, numTabs + 1);
 	out << "}" << endl;

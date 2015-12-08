@@ -1,3 +1,6 @@
 function test (int i);
 
-function test ( ) { }
+function test (int i ) {
+int j = 0; 
+int k;
+}

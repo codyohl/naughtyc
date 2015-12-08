@@ -1,7 +1,6 @@
 #ifndef NAUGHTTYPES_H
 #define NAUGHTTYPES_H
 #include <map>
-
 // maps naught types to c types.
 static std::map<string,string> naughtToC = {
 	{"string", "char*"},
