@@ -220,13 +220,13 @@ vardecl_list :
 
 vardecl : 
          TYPE ID
-          { $$ = new VariableDeclarationNode();//$1, $2, false);
+          { $$ = new VariableDeclarationNode($1, $2, false);
           }
        | TYPE ID ASSIGN expr
-          { $$ = new VariableDeclarationAssignNode();//$1, $2, false, $4);
+          { $$ = new VariableDeclarationAssignNode($1, $2, false, $4);
           }
        | EXTERN TYPE ID  /* extern variable */
-          { $$ = new VariableDeclarationNode();//$1, $2, true);
+          { $$ = new VariableDeclarationNode($2, $3, true);
           }
        ;
 
