@@ -27,6 +27,7 @@
 #include "astnodes/TermExpressionNode.h"
 #include "astnodes/TermUnaryNode.h"
 #include "astnodes/TernaryExpressionNode.h"
+#include "astnodes/AssignExpressionNode.h"
 
 using namespace std;
 
@@ -55,6 +56,7 @@ extern ModuleNode *AST;
   #include "astnodes/TermExpressionNode.h"
   #include "astnodes/TermUnaryNode.h"
   #include "astnodes/TernaryExpressionNode.h"
+  #include "astnodes/AssignExpressionNode.h"
 }
 
 /***************************************
@@ -334,8 +336,7 @@ expr :
         { $$ = new TernaryExpressionNode($1, $3, $5);
         }
       | term  ASSIGN expr
-        { //$$ = new StrUtil(*$1 + *$2 + *$3);
-          //cout << *$$ << " -> expr" << endl;
+        { $$ = new AssignExpressionNode($1, $3);
         }
       | term
         { $$ = $1;
