@@ -1,9 +1,14 @@
 function test (int i);
 
 function test (int i ) {
+<<<<<<< HEAD
 int l = 3 * 4 + 9;
 int j = l;
 int k;
+=======
+int j = 0; 
+int k = j;
+>>>>>>> cfcbea6b812f2f6582d6ddc290db4f210c7a86b3
 5 + 3;
 9 - 7;
 989898;
