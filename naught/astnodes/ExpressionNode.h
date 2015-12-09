@@ -23,7 +23,6 @@ class ExpressionNode {
 protected:
 
 public:
-
 	/* returns a pair, where the first item is the name of the temp variable if created, 
 	 * and the second is the type of the expression. will also print to file if needed. */
 	virtual pair<string, string> evaluate(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp);

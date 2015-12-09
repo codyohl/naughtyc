@@ -77,6 +77,7 @@ extern ModuleNode *AST;
   std::vector<FunctionDeclarationNode*>* functiondeclarationlist;
   vector<VariableDeclarationNode*>* variabledeclarationlist;
   vector<FunctionDefinitionNode*>*  functiondefinitionlist;
+  vector<ExpressionNode*>* args;
 }
 
 /***********************************************************************
@@ -125,7 +126,7 @@ extern ModuleNode *AST;
 %type <parameter> param;
 %type <parameterlist> param_list;
 %type <functiondefinitionlist> funcdef_list
-%type <string_val> arglist;
+%type <args> arglist;
 
 /*********************************************
  * This is the terminal symbol.  The entire
@@ -314,16 +315,13 @@ expr :
         { $$ = new BinaryExpressionNode(new string("+"), $1, $3);
         }
       | expr SUB expr
-        { //$$ = new StrUtil(*$1 + *$2 + *$3);
-          //cout << *$$ << " -> expr" << endl;
+        { $$ = new BinaryExpressionNode(new string("-"), $1, $3);
         }
       | expr STAR expr
-        { //$$ = new StrUtil(*$1 + *$2 + *$3);
-          //cout << *$$ << " -> expr" << endl;
+        { $$ = new BinaryExpressionNode(new string("*"), $1, $3);
         }
       | expr DIV expr
-        { //$$ = new StrUtil(*$1 + *$2 + *$3);
-          //cout << *$$ << " -> expr" << endl;
+        { $$ = new BinaryExpressionNode(new string("/"), $1, $3);
         }
       | expr QUESTION expr COLON expr
         { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
@@ -369,12 +367,12 @@ term :
 
 arglist :
         expr
-        { //$$ = new StrUtil(*$1);
-          //cout << *$$ << " -> arglist" << endl;
+        { $$ = new vector<ExpressionNode*>();
+          $$->push_back($1);
         }
       | arglist COMMA expr
-        { //$$ = new StrUtil( *$1 + *$2 + *$3 );
-        //cout << *$$ << " -> arglist" << endl;
+        { $1->push_back($3);
+          $$ = $1;
         }
       ;
 

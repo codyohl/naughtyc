@@ -69,6 +69,12 @@ inline void ModuleNode::printNode(ofstream &out, int &temp) {
 }
 
 inline ModuleNode::~ModuleNode() {
+	for (auto p : funcdecs)
+		delete p;
+	for (auto p : funcdefs)
+		delete p;
+	for (auto p : vardecs)
+		delete p;
 }
 
 #endif //MODULE_NODE_H
