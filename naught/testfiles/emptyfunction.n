@@ -1,0 +1,15 @@
+function test (int i);
+
+function test (int i ) {
+int l = 3 * 4 + 9;
+int j = l;
+int k;
+5 + 3;
+9 - 7;
+989898;
+5+5+56+5+2+5+3 * (4 - 2) ;
+
+9 + 2 * 4;
+
+8 / 9 / 3 * 4 - 2 + 455;
+}
