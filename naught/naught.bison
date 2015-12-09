@@ -26,6 +26,7 @@
 #include "astnodes/Types.h"
 #include "astnodes/TermExpressionNode.h"
 #include "astnodes/TermUnaryNode.h"
+#include "astnodes/TernaryExpressionNode.h"
 
 using namespace std;
 
@@ -53,6 +54,7 @@ extern ModuleNode *AST;
   #include "astnodes/TermIDNode.h"
   #include "astnodes/TermExpressionNode.h"
   #include "astnodes/TermUnaryNode.h"
+  #include "astnodes/TernaryExpressionNode.h"
 }
 
 /***************************************
@@ -329,8 +331,7 @@ expr :
         { $$ = new BinaryExpressionNode(new string("/"), $1, $3);
         }
       | expr QUESTION expr COLON expr
-        { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4 + *$5);
-          //cout << *$$ << " -> expr" << endl;
+        { $$ = new TernaryExpressionNode($1, $3, $5);
         }
       | term  ASSIGN expr
         { //$$ = new StrUtil(*$1 + *$2 + *$3);
