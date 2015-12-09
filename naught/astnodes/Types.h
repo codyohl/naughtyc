@@ -4,7 +4,8 @@
 // maps naught types to c types.
 static std::map<string,string> naughtToC = {
 	{"string", "char*"},
-	{"int", "int32_t"}
+	{"int", "int32_t"},
+	{"pointer", "int*"}
 };	
 #endif
 

@@ -44,7 +44,7 @@ inline void VariableDeclarationNode::printNode(ofstream &out, map<string,string>
 	if (isExtern) {
 		out << "extern ";
 	}
-	out << type << " " << name << ";" << endl;
+	out << naughtToC[type] << " " << name << ";" << endl;
 
 	// adds to the symbol table.
 	symbolTable[name] = type;

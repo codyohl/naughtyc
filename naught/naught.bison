@@ -25,6 +25,7 @@
 #include "astnodes/TermNode.h"
 #include "astnodes/Types.h"
 #include "astnodes/TermExpressionNode.h"
+#include "astnodes/TermUnaryNode.h"
 
 using namespace std;
 
@@ -51,6 +52,7 @@ extern ModuleNode *AST;
   #include "astnodes/TermNode.h"
   #include "astnodes/TermIDNode.h"
   #include "astnodes/TermExpressionNode.h"
+  #include "astnodes/TermUnaryNode.h"
 }
 
 /***************************************
@@ -91,7 +93,7 @@ extern ModuleNode *AST;
 %right <string_val> COLON QUESTION
 %left <string_val> ADD SUB
 %left <string_val> STAR DIV
-%right <string_val> UNARY_OP
+%right <str> UNARY_OP
 /*********************************************************
  * Okay, that's it -- after this order doesn't matter
  *********************************************************/
@@ -335,8 +337,7 @@ expr :
           //cout << *$$ << " -> expr" << endl;
         }
       | term
-        { //$$ = new StrUtil(*$1);
-          //cout << *$$ << " -> expr" << endl;
+        { $$ = $1;
         }
       ;
 
@@ -352,19 +353,15 @@ term :
         }
       | LPAREN expr RPAREN
        { $$ = new TermExpressionNode($2);
-         //cout << *$$ << " -> term" << endl;
         }
       | UNARY_OP term
-        { //$$ = new StrUtil( *$1 + *$2);
-          //cout << *$$ << " -> term" << endl;
+        { $$ = new TermUnaryNode($1, $2);
         }
       | ID LPAREN arglist RPAREN  /* function call */
-       { //$$ = new StrUtil(*$1 + *$2 + *$3 + *$4);
-         //cout << *$$ << " -> term" << endl;
+       { 
        }
       | ID LPAREN RPAREN  /* function call */
-       { //$$ = new StrUtil(*$1 + *$2 + *$3);
-         //cout << *$$ << " -> term" << endl;
+       { 
        }
       ;
 

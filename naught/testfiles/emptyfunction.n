@@ -3,6 +3,9 @@ function test (int i);
 function test (int i ) {
 int l = 3 * 4 + 9;
 int j = l;
+int y = print @ 1;
+int y = print & 1;
+int y = print print 1;
 int k;
 5 + 3;
 9 - 7;
