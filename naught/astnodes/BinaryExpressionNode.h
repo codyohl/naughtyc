@@ -1,5 +1,5 @@
-#ifndef EXPRESSION_NODE_H
-#define EXPRESSION_NODE_H
+#ifndef BINARY_EXPRESSION_NODE_H
+#define BINARY_EXPRESSION_NODE_H
 
 // include possible sub-nodes
 #include "Types.h"
@@ -16,6 +16,7 @@
 #include <map>
 #include <string>
 #include <cstring>
+#include <sstream>
 
 using namespace std;
 
@@ -50,18 +51,18 @@ inline pair<string, string> BinaryExpressionNode::evaluate(ofstream &out, map<st
 
 	stringstream ss;
 	ss << "temp" << temp;
-	retVal.first() = ss.str();
-	retVal.second() = leftExp.second();
-	// check that the types are compatible here
-	TAB(out,numTabs);
-	out << retVal.second() << " temp" << temp << " = " << leftExp.first() << op << rightExp.first() << ";" << endl;
+	retVal.first = ss.str();
+	retVal.second = leftExp.second;
+	// check that the types are compatible here;
+	out << retVal.second << " temp" << temp << " = " << leftExp.first << op << rightExp.first << ";" << endl;
+	TABS(out,numTabs);
 	temp++;
 	return retVal;
 }
 
-inline BinaryExpressionNode::~ExpressionNode() {
+inline BinaryExpressionNode::~BinaryExpressionNode() {
 	delete left;
 	delete right;
 }
 
-#endif //EXPRESSION_NODE_H
+#endif //BINARY_EXPRESSION_NODE_H

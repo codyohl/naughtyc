@@ -1,12 +1,14 @@
-#ifndef EXPRESSION_NODE_H
-#define EXPRESSION_NODE_H
+#ifndef TERM_LITERAL_NODE_H
+#define TERM_LITERAL_NODE_H
 
 // include possible sub-nodes
 #include "Types.h"
 #include "Node.h"
 #include "VariableDeclarationNode.h"
+#include "ExpressionNode.h"
 #include "StatementNode.h"
 #include "ParameterNode.h"
+#include "TermNode.h"
 
 #include <map>
 #include <iostream>
@@ -19,7 +21,7 @@
 
 using namespace std;
 
-class TermLiteralNode : public ExpressionNode {
+class TermLiteralNode : public TermNode {
 protected:
 	string literal;
 	string type;
@@ -42,14 +44,14 @@ inline TermLiteralNode::TermLiteralNode(string* literal, string* type) {
 
 inline pair<string, string> TermLiteralNode::evaluate(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) { 
 	pair<string,string> retVal;
-	retVal.first() = literal;
-	retVal.second() = type;
+	retVal.first = literal;
+	retVal.second = type;
 
 	return retVal;
 }
 
-inline TermLiteralNode::~ExpressionNode() {
+inline TermLiteralNode::~TermLiteralNode() {
 	
 }
 
-#endif //EXPRESSION_NODE_H
+#endif //TERM_LITERAL_NODE_H

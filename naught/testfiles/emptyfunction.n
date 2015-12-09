@@ -3,4 +3,8 @@ function test (int i);
 function test (int i ) {
 int j = 0; 
 int k;
+5 + 3;
+9 + 7;
+989898;
+5+5+56+5+2+5+3;
 }

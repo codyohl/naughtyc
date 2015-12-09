@@ -18,6 +18,10 @@
 #include "astnodes/StatementNode.h"
 #include "astnodes/BlockNode.h"
 #include "astnodes/ParameterNode.h"
+#include "astnodes/ExpressionNode.h"
+#include "astnodes/BinaryExpressionNode.h"
+#include "astnodes/TermLiteralNode.h"
+#include "astnodes/TermNode.h"
 #include "astnodes/Types.h"
 
 using namespace std;
@@ -39,6 +43,10 @@ extern ModuleNode *AST;
   #include "astnodes/VariableDeclarationNode.h"
   #include "astnodes/VariableDeclarationAssignNode.h"
   #include "astnodes/StatementNode.h"
+  #include "astnodes/ExpressionNode.h"
+  #include "astnodes/BinaryExpressionNode.h"
+  #include "astnodes/TermLiteralNode.h"
+  #include "astnodes/TermNode.h"
 
 }
 
@@ -61,6 +69,8 @@ extern ModuleNode *AST;
   string* str;
   BlockNode* blocknode;
   StatementNode* stat;
+  TermNode* termnode;
+  ExpressionNode* exp;
 
   vector<StatementNode*>* statementlist;
   vector<ParameterNode*>* parameterlist;
@@ -91,8 +101,8 @@ extern ModuleNode *AST;
 %token <string_val> LCBRACE RCBRACE RPAREN LPAREN SEMI COMMA EXTERN FUNCTION SFUNCTION RETURN
 
 %token <str> TYPE
-%token <string_val> STRING_LITERAL
-%token <string_val> INT_LITERAL
+%token <str> STRING_LITERAL
+%token <str> INT_LITERAL
 %token <str> ID
 
 /**********************************************************
@@ -105,8 +115,8 @@ extern ModuleNode *AST;
 %type <blocknode> block
 %type <variabledeclaration> vardecl
 %type <functiondeclaration> funcdecl
-%type <string_val> expr
-%type <string_val> term
+%type <exp> expr
+%type <termnode> term
 %type <stat> stmt
 
 %type <statementlist> stmt_list
@@ -292,17 +302,16 @@ stmt_list :
 
 stmt : 
          expr SEMI
-          { $$ = new StatementNode();//false, $1);
+          { $$ = new StatementNode(false, $1);
           }
        | RETURN expr SEMI
-          { $$ = new StatementNode();//true, $2);
+          { $$ = new StatementNode(true, $2);
           }
      ;
 
 expr : 
         expr ADD expr
-        { //$$ = new StrUtil(*$1 + *$2 + *$3);
-          //cout << *$$ << " -> expr" << endl;
+        { $$ = new BinaryExpressionNode(new string("+"), $1, $3);
         }
       | expr SUB expr
         { //$$ = new StrUtil(*$1 + *$2 + *$3);
@@ -332,16 +341,13 @@ expr :
 
 term :
         STRING_LITERAL
-        { //$$ = new StrUtil(*$1);
-          //cout << *$$ << " -> term" << endl;
+        { $$ = new TermLiteralNode($1, new string("string"));
         }
       | INT_LITERAL
-        { //$$ = new StrUtil(*$1);
-          //cout << *$$ << " -> term" << endl;
+        { $$ = new TermLiteralNode($1, new string("int"));
         }
       | ID
-        { //$$ = new StrUtil(*$1);
-          //cout << *$$ << " -> term" << endl;
+        { //
         }
       | LPAREN expr RPAREN
        { //$$ = new StrUtil( *$1 + *$2 + *$3 );
