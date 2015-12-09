@@ -40,8 +40,6 @@ inline void StatementNode::printNode(ofstream &out, map<string,string> &symbolTa
 		out << "return ";
 
 	pair<string,string> p = expression->evaluate(out,symbolTable,numTabs,temp);
-	//TABS(out, numTabs);
-	out << p.first << ";";
 }
 
 inline StatementNode::~StatementNode() {

@@ -4,11 +4,13 @@ function test (int i ) {
 int l = 3 * 4 + 9;
 int j = l;
 int y = print @ 1;
-int y = print & 1;
-int y = print print 1;
-
 int exp = 5? 3 : 0;
+int y = exp = 3;
 int k;
+int aa = 8;
+aa = k = y = 88;
+
+k = 8;
 5 + 3;
 9 - 7;
 989898;

@@ -54,7 +54,7 @@ inline pair<string, string> BinaryExpressionNode::evaluate(ofstream &out, map<st
 	retVal.first = ss.str();
 	retVal.second = leftExp.second;
 	// check that the types are compatible here;
-	out << retVal.second << " temp" << temp << " = " << leftExp.first << op << rightExp.first << ";" << endl;
+	out << naughtToC[retVal.second] << " temp" << temp << " = " << leftExp.first << op << rightExp.first << ";" << endl;
 	TABS(out,numTabs);
 	temp++;
 	return retVal;

@@ -8,6 +8,7 @@
 #include "StatementNode.h"
 #include "ParameterNode.h"
 #include "ExpressionNode.h"
+#include "TermNode.h"
 
 #include <map>
 #include <iostream>
@@ -45,8 +46,7 @@ inline pair<string, string> AssignExpressionNode::evaluate(ofstream &out, map<st
 	auto exprP = e->evaluate(out, symbolTable, numTabs, temp);
 	auto termP = t->evaluate(out, symbolTable, numTabs, temp);
 	
-	// create an if statement
-	out << naughtToC[termP.second] << " " << termP.first << " = " << exprP.first << ";" << endl;
+	out << termP.first << " = " << exprP.first << ";" << endl;
 	TABS(out, numTabs);
 
 	return termP;
