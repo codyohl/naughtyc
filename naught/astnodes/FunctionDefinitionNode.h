@@ -24,7 +24,7 @@ protected:
 public:
 	FunctionDefinitionNode(string* id, bool isSFunction, vector<ParameterNode*>* params, BlockNode* block) ;
 
-	void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
+	void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp);
 
 	void compile(map<string,string> &symbolTable);
 
@@ -36,7 +36,7 @@ inline FunctionDefinitionNode::FunctionDefinitionNode(string* id, bool isSFuncti
 	this->block = block;
 }
 
-inline void FunctionDefinitionNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
+inline void FunctionDefinitionNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) {
 	compile(symbolTable);
 	// gets return type.
 	string retType = isSFunction?  naughtToC["string"] : naughtToC["int"];
@@ -45,13 +45,13 @@ inline void FunctionDefinitionNode::printNode(ofstream &out, map<string,string> 
 	out << retType << " " << name << "(";
 
 	for (unsigned int i = 0; i < parameterList.size(); i++) {
-		parameterList[i]->printNode(out, symbolTable, numTabs);
+		parameterList[i]->printNode(out, symbolTable, numTabs, temp);
 		if (i != parameterList.size()-1)
 			out << ", ";
 	}
 	// now, prints the definition block.
 	out << ") {" << endl;
-	block->printNode(out, symbolTable, numTabs + 1);
+	block->printNode(out, symbolTable, numTabs + 1, temp);
 	out << "}" << endl;
 }
 

@@ -5,7 +5,7 @@
 #include "Types.h"
 #include "Node.h"
 #include "ParameterNode.h"
-//#include "ExpressionNode.h"
+#include "ExpressionNode.h"
 
 #include <iostream>
 #include <fstream>
@@ -27,14 +27,14 @@ public:
 
 	~StatementNode();
 
-	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
+	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp);
 };
 
 inline StatementNode::StatementNode() {//bool isReturnStatement, ExpressionNode expr) {
 	//this->expression = expr;
 }
 
-inline void StatementNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
+inline void StatementNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) {
 	
 	out << "StatementNode";
 }

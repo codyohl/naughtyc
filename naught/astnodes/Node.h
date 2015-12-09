@@ -14,14 +14,12 @@ using namespace std;
 class Node {
   public:
     // signature of the node method that will print the node  (overridden by sub nodes.)
-    virtual void printNode(ofstream &out, map<string, string> &symbolTable, int numTabs);
+    virtual void printNode(ofstream &out, map<string, string> &symbolTable, int numTabs, int &temp);
     // virtual destructor.
     virtual ~Node();
 };
 
-inline void Node::printNode(ofstream &out, map<string, string> &symbolTable, int numTabs) {
-  out << " Basic Node ";
-}
+inline void Node::printNode(ofstream &out, map<string, string> &symbolTable, int numTabs, int &temp) { }
 
 inline Node::~Node() {}
 

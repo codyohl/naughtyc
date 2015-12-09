@@ -5,7 +5,7 @@
 #include "Types.h"
 #include "Node.h"
 #include "ParameterNode.h"
-//#include "ExpressionNode.h"
+#include "ExpressionNode.h"
 #include "StatementNode.h"
 #include "VariableDeclarationNode.h"
 
@@ -28,14 +28,14 @@ public:
 
 	~VariableDeclarationAssignNode();
 
-	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
+	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp);
 };
 
 inline VariableDeclarationAssignNode::VariableDeclarationAssignNode() {//string* t, string* n, bool ext, ExpressionNode* expr) : VariableDeclarationNode(t, n, ext) {
 	// this->assignExpr = expr;
 }
 
-inline void VariableDeclarationAssignNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
+inline void VariableDeclarationAssignNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) {
 	
 	out << "VariableDeclarationAssignNode";
 }

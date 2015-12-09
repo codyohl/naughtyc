@@ -78,11 +78,9 @@ int main(int argc, char **argv)
   ofstream output;
   output.open(outFilename);
   // verify?
-
+  int temp = 0;
   // Generate code
-  AST->printNode(output);
-
-  
+  AST->printNode(output, temp);
 
   // clean up
   delete AST;

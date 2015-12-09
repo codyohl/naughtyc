@@ -27,7 +27,7 @@ public:
 
 	~ParameterNode();
 
-	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
+	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp);
 };
 
 inline ParameterNode::ParameterNode(string* t, string* n) {
@@ -38,7 +38,7 @@ inline ParameterNode::ParameterNode(string* t, string* n) {
 	delete t;
 }
 
-inline void ParameterNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
+inline void ParameterNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) {
 	// prints the type then the name.
 	out << naughtToC[type] << " " << name; 
 

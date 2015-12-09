@@ -29,7 +29,7 @@ public:
 
 	~FunctionDeclarationNode();
 
-	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
+	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp);
 
 	void compile(map<string,string> &symbolTable);
 };
@@ -42,7 +42,7 @@ inline FunctionDeclarationNode::FunctionDeclarationNode(string* id, bool isSFunc
 	delete id;
 }
 
-inline void FunctionDeclarationNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
+inline void FunctionDeclarationNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) {
 	compile(symbolTable);
 	
 	string retType = isSFunction?  naughtToC["string"] : naughtToC["int"];
@@ -50,7 +50,7 @@ inline void FunctionDeclarationNode::printNode(ofstream &out, map<string,string>
 	out << retType << " " << name << "(";
 
 	for (unsigned int i = 0; i < parameterList.size(); i++) {
-		parameterList[i]->printNode(out, symbolTable, numTabs);
+		parameterList[i]->printNode(out, symbolTable, numTabs, temp);
 		if (i != parameterList.size()-1)
 			out << ", ";
 	}

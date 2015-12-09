@@ -29,7 +29,7 @@ public:
 
 	~BlockNode();
 
-	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
+	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp);
 };
 
 inline BlockNode::BlockNode(vector<VariableDeclarationNode*>* variabledecs, vector<StatementNode*>* statements) {
@@ -40,15 +40,15 @@ inline BlockNode::BlockNode(vector<VariableDeclarationNode*>* variabledecs, vect
 	delete statements;
 }
 
-inline void BlockNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
+inline void BlockNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) {
 	for( auto v : varDecList ) {
 		TABS(out, numTabs);
-		v->printNode(out, symbolTable, numTabs);
+		v->printNode(out, symbolTable, numTabs, temp);
 		out << endl;
 	}
 	for( auto s : stmtList ) {
 		TABS(out, numTabs);
-		s->printNode(out, symbolTable, numTabs);
+		s->printNode(out, symbolTable, numTabs, temp);
 		out << endl;
 	}
 }

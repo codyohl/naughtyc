@@ -5,7 +5,7 @@
 #include "Types.h"
 #include "Node.h"
 #include "ParameterNode.h"
-//#include "ExpressionNode.h"
+#include "ExpressionNode.h"
 #include "StatementNode.h"
 
 #include <iostream>
@@ -22,14 +22,14 @@ class VariableDeclarationNode : public Node {
 protected:
  // string name;
  // string type;
- // bool isExtern;			 // ExpressionNode* assignExpr; in subclass 
+ // bool isExtern;			
 
 public:
 	VariableDeclarationNode();//string* t, string* n, bool ext);
 
 	~VariableDeclarationNode();
 
-	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs);
+	virtual void printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp);
 };
 
 inline VariableDeclarationNode::VariableDeclarationNode() {//string* t, string* n, bool ext) {
@@ -41,7 +41,7 @@ inline VariableDeclarationNode::VariableDeclarationNode() {//string* t, string* 
 	// delete n;
 }
 
-inline void VariableDeclarationNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs) {
+inline void VariableDeclarationNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) {
 	
 	out << "VariableDeclarationNode";
 }
