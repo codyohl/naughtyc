@@ -41,7 +41,8 @@ inline ParameterNode::ParameterNode(string* t, string* n) {
 inline void ParameterNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) {
 	// prints the type then the name.
 	out << naughtToC[type] << " " << name; 
-
+	// adds to the symbol table.
+	symbolTable[name] = type;
 }
 
 inline ParameterNode::~ParameterNode() {

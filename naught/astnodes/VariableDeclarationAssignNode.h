@@ -42,6 +42,9 @@ inline void VariableDeclarationAssignNode::printNode(ofstream &out, map<string,s
 		out << "extern ";
 	}
 	out << type << " " << name << " = " << p.first << ";" << endl;
+
+	// adds to symbol table.
+	symbolTable[name] = type;
 }
 
 inline VariableDeclarationAssignNode::~VariableDeclarationAssignNode() {

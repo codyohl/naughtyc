@@ -45,6 +45,9 @@ inline void VariableDeclarationNode::printNode(ofstream &out, map<string,string>
 		out << "extern ";
 	}
 	out << type << " " << name << ";" << endl;
+
+	// adds to the symbol table.
+	symbolTable[name] = type;
 }
 
 inline VariableDeclarationNode::~VariableDeclarationNode() {

@@ -1,7 +1,8 @@
 function test (int i);
 
 function test (int i ) {
-int j = 0; 
+int l = 3 * 4 + 9;
+int j = l;
 int k;
 5 + 3;
 9 - 7;
