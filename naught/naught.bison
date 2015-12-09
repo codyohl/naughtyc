@@ -28,6 +28,7 @@
 #include "astnodes/TermUnaryNode.h"
 #include "astnodes/TernaryExpressionNode.h"
 #include "astnodes/AssignExpressionNode.h"
+#include "astnodes/TermFunctionCallNode.h"
 
 using namespace std;
 
@@ -57,6 +58,7 @@ extern ModuleNode *AST;
   #include "astnodes/TermUnaryNode.h"
   #include "astnodes/TernaryExpressionNode.h"
   #include "astnodes/AssignExpressionNode.h"
+  #include "astnodes/TermFunctionCallNode.h"
 }
 
 /***************************************
@@ -360,10 +362,10 @@ term :
         { $$ = new TermUnaryNode($1, $2);
         }
       | ID LPAREN arglist RPAREN  /* function call */
-       { 
+       { $$ = new TermFunctionCallNode($1, $3);
        }
       | ID LPAREN RPAREN  /* function call */
-       { 
+       { $$ = new TermFunctionCallNode($1, new vector<ExpressionNode*>());
        }
       ;
 

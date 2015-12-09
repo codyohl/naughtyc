@@ -10,6 +10,8 @@ int k;
 int aa = 8;
 aa = k = y = 88;
 
+aa = test(4,4,test(5),6);
+
 k = 8;
 5 + 3;
 9 - 7;
