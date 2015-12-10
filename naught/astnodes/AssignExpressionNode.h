@@ -43,8 +43,8 @@ inline AssignExpressionNode::AssignExpressionNode(TermNode* t, ExpressionNode* e
 
 inline pair<string, string> AssignExpressionNode::evaluate(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) { 
 
-	auto exprP = e->evaluate(out, symbolTable, numTabs, temp);
 	auto termP = t->evaluate(out, symbolTable, numTabs, temp);
+	auto exprP = e->evaluate(out, symbolTable, numTabs, temp);
 	
 	out << termP.first << " = " << exprP.first << ";" << endl;
 	TABS(out, numTabs);

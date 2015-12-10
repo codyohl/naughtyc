@@ -5,7 +5,8 @@
 static std::map<string,string> naughtToC = {
 	{"string", "char*"},
 	{"int", "int32_t"},
-	{"pointer", "int*"}
+	{"pointer", "int*"},
+	{"", "int"}
 };	
 #endif
 

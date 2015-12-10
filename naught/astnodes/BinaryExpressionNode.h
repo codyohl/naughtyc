@@ -46,8 +46,8 @@ inline BinaryExpressionNode::BinaryExpressionNode(string* op, ExpressionNode* le
 inline pair<string, string> BinaryExpressionNode::evaluate(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) { 
 	pair<string,string> retVal;
 
-	auto rightExp = right->evaluate(out, symbolTable, numTabs, temp);
 	auto leftExp  = left->evaluate (out, symbolTable, numTabs, temp);
+	auto rightExp = right->evaluate(out, symbolTable, numTabs, temp);
 
 	stringstream ss;
 	ss << "temp" << temp;

@@ -45,24 +45,36 @@ inline TernaryExpressionNode::TernaryExpressionNode(ExpressionNode* condition, E
 inline pair<string, string> TernaryExpressionNode::evaluate(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) { 
 	pair<string,string> retVal;
 
+	// evaluates the condition.
 	auto conditionExp = condition->evaluate(out, symbolTable, numTabs, temp);
-	auto ifTrueExp    = ifTrue->evaluate (out, symbolTable, numTabs, temp);
-	auto ifFalseExp   = ifFalse->evaluate (out, symbolTable, numTabs, temp);
-	
-	// create an if statement
-	out << naughtToC[ifTrueExp.second] << " temp" << temp << ";" << endl;
+
+	// evaluates the true and false nodes, not allowing the modification of any variables.
+	std::ofstream ofs;
+	std::map<string, string> st = symbolTable;
+	int nt = numTabs, t = temp;
+	auto ifTrueExp    = ifTrue->evaluate (ofs, st, nt, t);
+	auto ifFalseExp   = ifFalse->evaluate (ofs, st, nt, t);
+
+	// asserts types are equal, and gets the type for the temp variable. //TODO
+
+
+	string tempVarName = "temp" + to_string(temp);
+	out << naughtToC[ifTrueExp.second] << " " << tempVarName << ";" << endl;
+	temp++;
 	TABS(out, numTabs);
+	// creates an if statent;
 	out << "if (" << conditionExp.first << ") {" << endl;
 	TABS(out, numTabs + 1);
-	out << " temp" << temp << " = " << ifTrueExp.first << ";" << endl;
+	ifTrueExp = ifTrue->evaluate (out, symbolTable, numTabs + 1, temp);
+	out << " " << tempVarName << " = " << ifTrueExp.first << ";" << endl;
 	TABS(out, numTabs);
 	out << "} else { " << endl;
-	TABS(out, numTabs+1);
-	out << " temp" << temp << " = " << ifFalseExp.first << ";" << endl;
+	TABS(out, numTabs +1);
+	out << " " << tempVarName << " = " << ifFalseExp.first << ";" << endl;
 	TABS(out, numTabs);
 	out << "}" << endl;
 	TABS(out, numTabs);
-	retVal.first = "temp" + to_string(temp);
+	retVal.first = tempVarName;
 	retVal.second = ifTrueExp.second;
 	temp++;
 	return retVal;

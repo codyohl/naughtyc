@@ -45,27 +45,35 @@ inline pair<string, string> TermUnaryNode::evaluate(ofstream &out, map<string,st
 	auto pair = term->evaluate(out, symbolTable, numTabs, temp);
 
 	map<string,string> typesFormatStr = {
-		{"string", "%s"},
-		{"int", "%d"},
-		{"pointer", "%p"}
+		{"string", "\045s\\n"},
+		{"int", "\045d\\n"},
+		{"pointer", "\045p\\n"},
 	};	
 
 	if (!unary.compare("print")) {
-		out << "printf(\"" << typesFormatStr[pair.second] << "\", " << pair.first << ");" << endl;
+		// shouldn't be an lvalue. also assumes int if no type info is found (from func call)
+		string formatStr = typesFormatStr.count(pair.second) ? typesFormatStr[pair.second] : "\045d\\n";
+		out << "printf(\"" << formatStr << "\", " << pair.first << ");" << endl;
 		TABS(out, numTabs);
 		return pair;
 	}
 	else if (!unary.compare("@")) {
 		pair.second = "int";
-		out << naughtToC[pair.second] << " temp" << temp << " = *" << pair.first << endl;
-		TABS(out, numTabs);
-		pair.first = "temp" + to_string(temp);
-		temp++;
+		//out << naughtToC[pair.second] << " temp" << temp << " = *" << pair.first << endl;
+		//out << "*";
+		//TABS(out, numTabs);
+		//pair.first = "temp" + to_string(temp);
+		//temp++;
+
+		// I convinced myself that basically, this is just a one time dereference so we simply dereference the result of the previous expression.
+		// this doesnt create a temp because that wouldn't work if it was meant to be an lvalue. (it would simply copy, and a reassign woudl fail)
+		pair.first = "*(" + pair.first + ")";
 		return pair;
 	}
 	else if (!unary.compare("&")) {
+		// since no lvalue for address, just create a temp.
 		pair.second = "pointer";
-		out << naughtToC[pair.second] << " temp" << temp << " = &" << pair.first << endl;
+		out << naughtToC[pair.second] << " temp" << temp << " = &(" << pair.first << ");" << endl;
 		TABS(out, numTabs);
 		pair.first = "temp" + to_string(temp);
 		temp++;

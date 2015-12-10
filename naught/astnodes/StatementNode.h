@@ -32,14 +32,16 @@ public:
 
 inline StatementNode::StatementNode(bool isReturnStatement, ExpressionNode* expr) {
 	this->expression = expr;
+	this->isReturnStatement = isReturnStatement;
 }
 
 inline void StatementNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) {
 	
-	if (isReturnStatement)
-		out << "return ";
-
 	pair<string,string> p = expression->evaluate(out,symbolTable,numTabs,temp);
+
+	if (isReturnStatement)
+		out << "return " << p.first << ";" << endl;
+	TABS(out, numTabs);
 }
 
 inline StatementNode::~StatementNode() {
