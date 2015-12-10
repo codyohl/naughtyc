@@ -49,7 +49,7 @@ inline pair<string, string> AssignExpressionNode::evaluate(ofstream &out, map<st
 	if ((!termP.second.compare("string") || !exprP.second.compare("string")) && termP.second.compare(exprP.second))
 		err("Invalid string type assignment: " + termP.second + " to " + exprP.second);
 	else if (termP.second.compare(exprP.second))
-		wrn("Coersion of types: " + termP.second + " to " + exprP.second);
+		wrn("Coersion of types: " + termP.second + " to " + exprP.second + " for variable " + termP.first);
 	
 	out << termP.first << " = " << exprP.first << ";" << endl;
 	TABS(out, numTabs);

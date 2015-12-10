@@ -29,7 +29,7 @@ public:
 
 	virtual ~ExpressionNode();
 };
-
+// will never be called at runtime (this is a virtual method and there is no constructor for this class)
 inline pair<string, string> ExpressionNode::evaluate(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) { 
 	pair<string, string> p;
 	return p;
