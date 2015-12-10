@@ -39,6 +39,7 @@ inline void StatementNode::printNode(ofstream &out, map<string,string> &symbolTa
 	
 	pair<string,string> p = expression->evaluate(out,symbolTable,numTabs,temp);
 
+	// only actually print if it's a return statement - otherwise, we already have the expr in a temp from the evaluation.
 	if (isReturnStatement)
 		out << "return " << p.first << ";" << endl;
 	TABS(out, numTabs);

@@ -1,6 +1,0 @@
-
-function test() {
-  int x;
-  x + 2 * y;
-  return 0;
-}
