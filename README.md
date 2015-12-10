@@ -7,7 +7,7 @@ The Naught compiler to C
 
 2) run 'make' in /naught directory
 
-3) run /nstdlib/createNaughtLibrary.sh
+3) run /naught/nstdlib/createNaughtLibrary.sh
 
 4) place naught '.n' files /naught/naughtfiles/ directory
 
