@@ -63,10 +63,11 @@ inline void FunctionDeclarationNode::compile(map<string,string> &symbolTable) {
 	// if (!validateName(name))
 	// 	err("Invalid name for function: %s", name);
 	if (symbolTable.count(name)) {
-		 cout << "Error: " << "Multiple function declarations found: " << name;
-		 exit(2);
+		 // cout << "Error: " << "Multiple function declarations found: " << name;
+		 // exit(2);
+		err("Multiple function declarations found: " + name);
 	}
-	symbolTable[name] = isSFunction? naughtToC["string"] : naughtToC["int"];
+	symbolTable[name] = isSFunction? "string" : "int";
 }
 
 inline FunctionDeclarationNode::~FunctionDeclarationNode() {

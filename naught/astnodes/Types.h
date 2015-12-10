@@ -16,3 +16,15 @@ static std::map<string,string> naughtToC = {
         (x) << "  "; \
       }
 #endif
+
+#ifndef NAUGHT_ERR
+#define NAUGHT_ERR
+static void err(string msg) {
+	cerr << "Error: " << msg << endl << "Exiting naughtyc...";
+	exit(2);
+}
+
+static void wrn(string msg) {
+	cerr << "Warning: " << msg << endl;
+}
+#endif

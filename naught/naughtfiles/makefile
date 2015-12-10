@@ -5,7 +5,7 @@ INCDIRS = -I ../nstdlib
 CFLAGS = -c -g -Wall -std=c99
 LDFLAGS = -L ../nstdlib -lnaught
 
-EXES = example strings lvalue swap tiny
+EXES = example strings lvalue swap tiny 333test1
 
 .PRECIOUS: %.c
 

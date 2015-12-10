@@ -45,6 +45,11 @@ inline pair<string, string> AssignExpressionNode::evaluate(ofstream &out, map<st
 
 	auto termP = t->evaluate(out, symbolTable, numTabs, temp);
 	auto exprP = e->evaluate(out, symbolTable, numTabs, temp);
+
+	if ((!termP.second.compare("string") || !exprP.second.compare("string")) && termP.second.compare(exprP.second))
+		err("Invalid string type assignment: " + termP.second + " to " + exprP.second);
+	else if (termP.second.compare(exprP.second))
+		wrn("Coersion of types: " + termP.second + " to " + exprP.second);
 	
 	out << termP.first << " = " << exprP.first << ";" << endl;
 	TABS(out, numTabs);

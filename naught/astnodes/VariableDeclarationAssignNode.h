@@ -38,6 +38,10 @@ inline VariableDeclarationAssignNode::VariableDeclarationAssignNode(string* t, s
 
 inline void VariableDeclarationAssignNode::printNode(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) {
 	auto p  = assignExpr->evaluate(out, symbolTable, numTabs, temp);
+	// check types
+	if (p.second.compare(type))
+		wrn("Type coersion requested: " + type + " to " + p.second + " for variable " + p.first);
+
 	if (isExtern) {
 		out << "extern ";
 	}

@@ -56,7 +56,8 @@ inline pair<string, string> TernaryExpressionNode::evaluate(ofstream &out, map<s
 	auto ifFalseExp   = ifFalse->evaluate (ofs, st, nt, t);
 
 	// asserts types are equal, and gets the type for the temp variable. //TODO
-
+	if (ifTrueExp.second.compare(ifFalseExp.second))
+		wrn("Ternary expressions should have equal types in true and false expressions : " + ifTrueExp.first);
 
 	string tempVarName = "temp" + to_string(temp);
 	out << naughtToC[ifTrueExp.second] << " " << tempVarName << ";" << endl;

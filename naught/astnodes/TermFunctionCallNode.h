@@ -45,8 +45,13 @@ inline TermFunctionCallNode::TermFunctionCallNode(string* f, vector<ExpressionNo
 
 inline pair<string, string> TermFunctionCallNode::evaluate(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) { 
 	pair<string,string> retVal;
-	// gets the type if it exists in the symbol table, otherwise assume int.
-	retVal.second = symbolTable.count(functionName) ? symbolTable[functionName] : "int";
+	// gets the type if it exists in the symbol table, otherwise optimistically assume int.
+	if (symbolTable.count(functionName)) {
+		retVal.second = symbolTable[functionName];
+	} else {
+		wrn("Assuming function " + functionName + " returns an 'int' type.");
+		retVal.second = "int";
+	}
 
 	string args = "";
 	for (unsigned int i = 0; i < argList.size(); i++) {
@@ -56,7 +61,7 @@ inline pair<string, string> TermFunctionCallNode::evaluate(ofstream &out, map<st
 			args += ", ";
 	}
 	retVal.first = "temp" + to_string(temp);
-	out << retVal.second << " " << retVal.first << " = " << functionName << "(" << args << ");" << endl;
+	out << naughtToC[retVal.second] << " " << retVal.first << " = " << functionName << "(" << args << ");" << endl;
 	TABS(out, numTabs);
 	
 	temp++;

@@ -58,6 +58,9 @@ inline pair<string, string> TermUnaryNode::evaluate(ofstream &out, map<string,st
 		return pair;
 	}
 	else if (!unary.compare("@")) {
+		if (pair.second.compare("pointer"))
+			err("Invalid dereference of non-pointer type: " + pair.second);
+
 		pair.second = "int";
 		//out << naughtToC[pair.second] << " temp" << temp << " = *" << pair.first << endl;
 		//out << "*";
@@ -66,7 +69,7 @@ inline pair<string, string> TermUnaryNode::evaluate(ofstream &out, map<string,st
 		//temp++;
 
 		// I convinced myself that basically, this is just a one time dereference so we simply dereference the result of the previous expression.
-		// this doesnt create a temp because that wouldn't work if it was meant to be an lvalue. (it would simply copy, and a reassign woudl fail)
+		// this doesnt create a temp because that wouldn't work if it was meant to be an lvalue. (it would simply copy, and a reassign would fail)
 		pair.first = "*(" + pair.first + ")";
 		return pair;
 	}
@@ -79,7 +82,7 @@ inline pair<string, string> TermUnaryNode::evaluate(ofstream &out, map<string,st
 		temp++;
 		return pair;
 	}
-	cout << "Wrong unary operator: " << unary;
+	err("Wrong unary operator: " + unary);
 	exit(2);
 }
 

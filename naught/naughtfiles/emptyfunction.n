@@ -1,6 +1,7 @@
 
 
 function test (int i);
+function test (int i);
 
 pointer globalptr;
 int globalInt;

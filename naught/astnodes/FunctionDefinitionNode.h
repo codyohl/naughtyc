@@ -57,7 +57,7 @@ inline void FunctionDefinitionNode::printNode(ofstream &out, map<string,string> 
 
 /* runs compile time checks on the node */
 inline void FunctionDefinitionNode::compile(map<string,string> &symbolTable) {
-	symbolTable[name] = isSFunction? naughtToC["string"] : naughtToC["int"];
+	symbolTable[name] = isSFunction? "string" : "int";
 	// can possible run other checks here.
 }
 
