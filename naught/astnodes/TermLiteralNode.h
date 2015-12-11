@@ -44,7 +44,14 @@ inline TermLiteralNode::TermLiteralNode(string* literal, string* type) {
 
 inline pair<string, string> TermLiteralNode::evaluate(ofstream &out, map<string,string> &symbolTable, int numTabs, int &temp) { 
 	pair<string,string> retVal;
-	retVal.first = literal;
+	if(type.compare("string")) {
+		out << type << " temp" << temp << " = nstr_new(" << literal << ");" << endl;
+		TABS(out, numTabs);
+		retVal.first = "temp" + to_string(temp++);
+	} else {
+		retVal.first = literal;
+	}
+
 	retVal.second = type;
 
 	return retVal;
