@@ -53,7 +53,7 @@ inline pair<string, string> BinaryExpressionNode::evaluate(ofstream &out, map<st
 	retVal.second = leftExp.second;
 
 	if(!leftExp.second.compare("string") && !rightExp.second.compare("string")) {
-		out << naughtToC[retVal.second] << " " << retVal.first << " = nstr_add(" << leftExp.first << ", " << rightExp.first << ");" << endl;
+		out << naughtToC[retVal.second] << " " << retVal.first << " = nstr_plus(" << leftExp.first << ", " << rightExp.first << ");" << endl;
 	} else {
 		out << naughtToC[retVal.second] << " " << retVal.first << " = " << leftExp.first << op << rightExp.first << ";" << endl;
 	}

@@ -71,6 +71,7 @@ inline pair<string, string> TernaryExpressionNode::evaluate(ofstream &out, map<s
 	TABS(out, numTabs);
 	out << "} else { " << endl;
 	TABS(out, numTabs +1);
+	ifFalseExp = ifFalse->evaluate (out, symbolTable, numTabs + 1, temp);
 	out << " " << tempVarName << " = " << ifFalseExp.first << ";" << endl;
 	TABS(out, numTabs);
 	out << "}" << endl;

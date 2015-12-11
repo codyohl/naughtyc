@@ -60,11 +60,6 @@ inline void FunctionDeclarationNode::printNode(ofstream &out, map<string,string>
 
 /* runs compile time checks on the node */
 inline void FunctionDeclarationNode::compile(map<string,string> &symbolTable) {
-	// if (!validateName(name))
-	// 	err("Invalid name for function: " + name);
-	if (symbolTable.count(name)) {
-		err("Multiple function declarations found: " + name);
-	}
 	symbolTable[name] = isSFunction? "string" : "int";
 }
 

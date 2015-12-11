@@ -46,7 +46,7 @@ inline void ModuleNode::printNode(ofstream &out, int &temp) {
 	// add the #includes.
 	out << "#include <stdio.h>"     << endl;
 	out << "#include <stdlib.h>"    << endl;
-	out << "#include <nstdlib.h>"   << endl;
+	out << "#include \"../nstdlib/nstdlib.h\""   << endl;
 	out << "#include <inttypes.h>"  << endl;
 	out << endl << endl;
 
@@ -56,7 +56,7 @@ inline void ModuleNode::printNode(ofstream &out, int &temp) {
 		{"printf", "int"},
 		{"nstr_new", "char*"},
 		{"nstr_assign", "char*"},
-		{"nstr_add", "char*"}
+		{"nstr_plus", "char*"}
 	};	
 
 	int numTabs = 0;

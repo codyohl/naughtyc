@@ -50,6 +50,7 @@ inline void VariableDeclarationAssignNode::printNode(ofstream &out, map<string,s
 	} else {
 		out << naughtToC[type] << " " << name << " = " << p.first << ";" << endl;
 	}
+	TABS(out, numTabs);
 
 	// adds to symbol table.
 	symbolTable[name] = type;

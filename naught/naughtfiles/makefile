@@ -3,7 +3,7 @@ CPP = cpp
 CC = gcc
 INCDIRS = -I ../nstdlib
 CFLAGS = -c -g -Wall -std=c99
-LDFLAGS = -L ../nstdlib -lnaught
+LDFLAGS = ../nstdlib/nstdlib.o
 
 EXES = example strings lvalue swap tiny 333test1
 

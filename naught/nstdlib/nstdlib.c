@@ -1,7 +1,17 @@
 #include "nstdlib.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <inttypes.h>
 
-uint32_t nstrlen(char * input) {
-	return (uint32_t) input[-sizeof(int32_t)];
+
+typedef struct nstring_st {
+  int32_t    len;     // The length of the string, ignoring the trailing \0
+  char*       str;   // This is a C-style string
+} nstring_st;
+
+int32_t nstrlen(char * input) {
+	return (int32_t) input[-sizeof(int32_t)];
 }
 
 char * nstr_new(char * input) {
