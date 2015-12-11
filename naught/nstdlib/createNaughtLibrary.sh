@@ -1,3 +1,3 @@
 #!/bin/bash
-g++ -Wall -g -c nstdlib.cc -o nstdlib.o
+gcc -Wall -g -c nstdlib.c -o nstdlib.o
 ar -rcs libnaught.a nstdlib.o
