@@ -26,5 +26,5 @@ char * nstr_plus(char * s1, char * s2) {
 	nstr->len = nstrlen(s1) + nstrlen(s2);
 	strcpy(nstr->str, s1);
 	strcpy(nstr->str + nstrlen(s1), s2);
-	return nstr;
+	return nstr->str;
 }

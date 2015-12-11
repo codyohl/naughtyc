@@ -53,7 +53,10 @@ inline void ModuleNode::printNode(ofstream &out, int &temp) {
 	//TODO: create the symbol table, add all nstdlib function declarations.
 	map<string, string> symbolTable = {
 		{"nstrlen", "string"},
-		{"printf", "int"}
+		{"printf", "int"},
+		{"nstr_new", "char*"},
+		{"nstr_assign", "char*"},
+		{"nstr_add", "char*"}
 	};	
 
 	int numTabs = 0;

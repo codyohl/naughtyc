@@ -9,7 +9,7 @@
 
 typedef struct nstring_st {
   int32_t    len;     // The length of the string, ignoring the trailing \0
-  char       str[];   // This is a C-style string
+  char*       str;   // This is a C-style string
 } nstring_st;
 
 uint32_t nstrlen(char * string);
@@ -20,4 +20,4 @@ char * nstr_assign(char * input);
 
 char * nstr_plus(char * s1, char * s2);
 
-#endif N_STD_LIB_H
+#endif //N_STD_LIB_H

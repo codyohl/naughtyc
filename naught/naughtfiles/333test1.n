@@ -1,3 +1,4 @@
+
 function fact(int x, pointer p); # 'function' means 'returns an int'
 
 int globalInt;

@@ -52,7 +52,7 @@ inline pair<string, string> AssignExpressionNode::evaluate(ofstream &out, map<st
 		wrn("Coersion of types: " + termP.second + " to " + exprP.second + " for variable " + termP.first);
 
 	if (!termP.second.compare("string")) {
-		out << termP.first << " = " << "nstr_assign(" << exprP.first ");" << endl;
+		out << termP.first << " = " << "nstr_assign(" << exprP.first << ");" << endl;
 	} else {
 		out << termP.first << " = " << exprP.first << ";" << endl;
 	}

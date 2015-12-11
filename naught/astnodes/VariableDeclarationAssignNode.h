@@ -45,7 +45,11 @@ inline void VariableDeclarationAssignNode::printNode(ofstream &out, map<string,s
 	if (isExtern) {
 		out << "extern ";
 	}
-	out << naughtToC[type] << " " << name << " = " << p.first << ";" << endl;
+	if (!p.second.compare("string")) {
+		out << naughtToC[type] << " " << name << " = nstr_new(" << p.first << ");" << endl;
+	} else {
+		out << naughtToC[type] << " " << name << " = " << p.first << ";" << endl;
+	}
 
 	// adds to symbol table.
 	symbolTable[name] = type;

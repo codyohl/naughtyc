@@ -74,7 +74,7 @@ inline pair<string, string> TermUnaryNode::evaluate(ofstream &out, map<string,st
 		return pair;
 	}
 	else if (!unary.compare("&")) {
-		if (pair.second.compare("string"))
+		if (!pair.second.compare("string"))
 			err("Can't take address of string type: " + pair.first);
 		// since no lvalue for address, just create a temp.
 		pair.second = "pointer";
