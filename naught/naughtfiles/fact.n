@@ -1,5 +1,0 @@
-#include "example.h"
-
-function fact(int x, pointer p) {
-  return @p = x ? x * fact(x-1,p) : 1;
-}
